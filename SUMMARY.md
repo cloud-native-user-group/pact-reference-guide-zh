@@ -1,6 +1,7 @@
 # Summary
 
-* [Getting Started](documentation/README.md)
+* [Getting Started](documentation/what_is_pact.md)
+   * [Terminology](documentation/terminology.md)
    * [Terminology](documentation/how_does_pact_work.md)
    * [Usage example](documentation/usage_ruby.md)
    * [Matching](documentation/matching.md)
