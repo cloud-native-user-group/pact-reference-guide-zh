@@ -1,9 +1,9 @@
-# Getting Started
+# 开始
 
-### How does Pact work?
+### Pact是怎样工作的？
 
-1. In the tests for the provider facing code in the consumer project, expectations are set up on a mock service provider.
-2. When the tests are run, the mock service returns the expected responses. The requests, and their expected responses, are then written to a “pact” file.
-3. The requests in the pact file are later replayed against the provider, and the actual responses are checked to make sure they match the expected responses.
+1. 在提供者所面向的消费者项目代码中编写测试，期望响应被设置在模拟的服务提供者上。
+2. 在测试运行时，模拟的服务将返回所期望的响应。请求和所期望的响应将会被写入到一个“pact”文件中。
+3. pact文件中的请求随后在提供者上进行重放，并检查实际响应以确保其与所期望响应相匹配。
 
 ![](https://raw.githubusercontent.com/pact-foundation/pact-foundation.github.io/test/media/pact.png)

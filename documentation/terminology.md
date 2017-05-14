@@ -1,29 +1,29 @@
-# Terminology
+# 术语表
 
-### Service Consumer
-A component that initiates a HTTP request to another component (the service `Provider`). Note that this does not depend on the way the data flows - whether it is a `GET` or a `PUT` / `POST` / `PATCH`, the `Consumer` is the initiator of the HTTP request.
+### 服务消费者
+向另一组件（服务`提供者`）发起HTTP请求的组件。注意这并不依赖于数据的流动方式——无论是`GET`还是`PUT` / `POST` / `PATCH`，`消费者`都是HTTP请求的发起者。
 
-### Service Provider
-A server that responds to an HTTP request from another component (the service consumer).
+### 服务提供者
+向另一组件（服务消费者）的HTTP请求提供响应的服务器。
 
-### Mock Service Provider
-Used by tests in the `Consumer` project to mock out the actual service `Provider`, meaning that integration-like tests can be run without requiring the actual service `Provider` to be available.
+### 模拟的服务提供者
+在`消费者`项目中的单元测试里用于模拟真实的服务`提供者`，意味着不必需要真实的服务`提供者`就绪，就可以将类集成测试运行起来。
 
-### Pact file
-A file containing the JSON serialised requests and responses that were defined in the `Consumer` tests. This is the `Contract`.
+### Pact文件
+一个包含了将`消费者`测试中所定义的请求和响应序列化为JSON形式的文件。即`契约`。
 
-### Pact verification
-To verify a `Pact`, the requests contained in a `Pact` file are replayed against the `Provider` code, and the responses returned are checked to ensure they match those expected in the `Pact` file.
+### Pact验证
+要对一个`Pact`进行验证，就要对`Pact`文件中所包含的请求基于`提供者`代码进行重放，然后检查返回的响应，确保其与`Pact`文件中所期望响应相匹配。
 
-### Provider state
-A name describing a “state” (like a fixture) that the `Provider` should be in when a given request is replayed against it - e.g. “when user John Doe exists” or “when user John Doe has a bank account”.
+### 提供者状态
+在对提供者重放某个给定的请求时，一个用于描述此时`提供者`应处于的“状态”（类似于夹具）的名字——比如“when user John Doe exists”或“when user John Doe has a bank account”。
 
-A `Provider` state name is specified when writing the `Consumer` specs, then, when the pact verification is set up in the `Provider` the same name will be used to identify the set up code block that should be run before the request is executed.
+`提供者`状态的名字是在写`消费者`测试时被指定的，然后当运行`提供者`的pact验证时，这个名字将被用于唯一标识在请求被执行前应该运行的代码块。
 
-### Pact Specification
+### Pact规范
 
-The [Pact Specification](https://github.com/pact-foundation/pact-specification) is a document that governs the structure of the actual generated Pact files to allow for interoperability between languages (consider, for example, a JavaScript `Consumer` connecting to a Scala JVM-based `Provider`) , using semantic versioning to indicate breaking changes.
+[Pact规范](https://github.com/pact-foundation/pact-specification)是一份用于管理实际生成的Pact文件结构的文档，以满足不同语言之间的互操作性（例如，设想一个JavaScript实现的`消费者`连接到基于Scala JVM的`提供者`），使用语义版本控制来指示具有破坏性的变化。
 
-Each language implementation of Pact needs to implement the rules of this specification, and advertise which version(s) are supported, corresponding closely to which features are available.
+Pact在每种语言下的实现都要实现规范中的规则，并且明确说明支持哪个或哪些版本，主要对应于哪些特性是可用的。
 
-The current version of the specification is [2.0](https://github.com/pact-foundation/pact-specification/tree/version-2), although not all implementations currently support this.
+该规范的当前版本是[2.0](https://github.com/pact-foundation/pact-specification/tree/version-2)，虽然目前还未能让各种实现全部支持该版本。

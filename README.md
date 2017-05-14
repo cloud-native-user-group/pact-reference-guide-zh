@@ -10,6 +10,5 @@ GitBook : [Pact中文参考指南](https://wldandan.gitbooks.io/pact-reference-g
 
 ## 贡献者：
 
-* Vicent
-* 想飞就飞  
-
+* Vincent
+* 想飞就飞
