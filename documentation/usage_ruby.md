@@ -1,14 +1,14 @@
-## Usage - an example scenario
+## 使用——一个场景示例
 
-We're going to write an integration, with Pact tests, between a consumer, the Zoo App, and its provider, the Animal Service. In the Consumer project, we're going to need to need a model (the Alligator class) to represent the data returned from the Animal Service, and a client (the AnimalServiceClient) which will be responsible for making the HTTP calls to the Animal Service.
+我们打算用Pact测试在消费者Zoo App和提供者Animal Service之间写一个集成测试。在消费者项目中，我们打算使用一个模型（Alligator类）来表示从Animal Service返回的数据，以及一个客户端（AnimalServiceClient）来负责向Animal Service发起HTTP调用。
 
 ![Example](../media/zoo_app-animal_service.png)
 
-### In the Zoo App (consumer) project
+### 在Zoo App（消费者）项目中
 
-#### 1. Start with your model
+#### 1. 从模型类开始
 
-Imagine a model class that looks something like this. The attributes for a Alligator live on a remote server, and will need to be retrieved by an HTTP call to the Animal Service.
+设想有一个类似这样的模型类。Alligator的属性依赖于远程服务，需要通过向Animal Service发HTTP调用才能够取到。
 
 ```ruby
 class Alligator
@@ -24,9 +24,9 @@ class Alligator
 end
 ```
 
-#### 2. Create a skeleton Animal Service client class
+#### 2. 创建Animal Service客户端类的骨架
 
-Imagine an Animal Service client class that looks something like this.
+设想有一个类似这样的Animal Service客户端类。
 
 ```ruby
 require 'httparty'
@@ -40,9 +40,9 @@ class AnimalServiceClient
   end
 end
 ```
-#### 3. Configure the mock Animal Service
+#### 3. 配置模拟的Animal Service
 
-The following code will create a mock service on localhost:1234 which will respond to your application's queries over HTTP as if it were the real "Animal Service" app. It also creates a mock provider object which you will use to set up your expectations. The method name to access the mock service provider will be what ever name you give as the service argument - in this case "animal_service"
+以下代码将在`localhost:1234`端口上创建一个模拟的服务，将用于对应用的HTTP查询请求作出响应，就像是真实的“Animal Service”一样。这里还创建了一个模拟的提供者对象，将用于设置期望值。用于访问模拟的服务提供者的名字可以是你在服务参数中所给出的任何名字——在本例中为“animal_service”。
 
 ```ruby
 # In /spec/service_providers/pact_helper.rb
@@ -59,7 +59,7 @@ Pact.service_consumer "Zoo App" do
 end
 ```
 
-#### 4. Write a failing spec for the Animal Service client
+#### 4. 给Animal Service客户端写一个失败的测试用例
 
 ```ruby
 # In /spec/service_providers/animal_service_client_spec.rb
@@ -97,7 +97,7 @@ describe AnimalServiceClient, :pact => true do
 end
 ```
 
-#### 5. Run the specs
+#### 5. 执行测试用例
 
 Running the AnimalServiceClient spec will generate a pact file in the configured pact dir (`spec/pacts` by default).
 Logs will be output to the configured log dir (`log` by default) that can be useful when diagnosing problems.
