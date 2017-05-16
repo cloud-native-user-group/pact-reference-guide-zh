@@ -99,12 +99,13 @@ end
 
 #### 5. 执行测试用例
 
-Running the AnimalServiceClient spec will generate a pact file in the configured pact dir (`spec/pacts` by default).
-Logs will be output to the configured log dir (`log` by default) that can be useful when diagnosing problems.
+执行AnimalServiceClient用例，将会在一个可配置的pact文件夹（默认为`spec/pacts`）下生成一个pact文件。
 
-Of course, the above specs will fail because the Animal Service client method is not implemented, so next, implement your provider client methods.
+日志将输出在一个可配置的日志文件夹（默认为`log`）下，可用于诊断问题。
 
-#### 6. Implement the Animal Service client consumer methods
+当然，以上这个用例将会失败，因为Animal Service的客户端方法还没有实现，那么下一步，来实现你的提供者客户端代码吧。
+
+#### 6. 实现Animal Service的消费者客户端方法
 
 ```ruby
 class AnimalServiceClient
@@ -118,20 +119,21 @@ class AnimalServiceClient
 end
 ```
 
-#### 7. Run the specs again.
+#### 7. 再次运行该用例
 
-Green! You now have a pact file that can be used to verify your expectations of the Animal Service provider project.
+通过！现在你就会得到一个pact文件，可用于在Animal Service提供者端的项目中验证期望。
 
-Now, rinse and repeat for other likely status codes that may be returned. For example, consider how you want your client to respond to a:
-* 404 (return null, or raise an error?)
-* 500 (specifying that the response body should contain an error message, and ensuring that your client logs that error message will make your life much easier when things go wrong)
-* 401/403 if there is authorisation.
+现在，对于其他可能的返回状态码重复上述步骤。例如，考虑以下场景中你的客户端需要如何响应：
 
-### In the Animal Service (provider) project
+* 404（返回null，还是抛出错误？）
+* 500（具体说明响应体中所包含的错误信息，并确保客户端日志记录下了这些错误信息，这样当出现问题时会省很多事）
+* 校验授权时是否需要返回401/403。
 
-#### 1. Create the skeleton API classes
+### 在Animal Service（提供者）项目中
 
-Create your API class using the framework of your choice (the Pact authors have a preference for [Webmachine][webmachine] and [Roar][roar]) - leave the methods unimplemented, we're doing Test First Develoment, remember?
+#### 1. 创建API类的骨架
+
+使用你所选择的框架创建API类（Pact的作者更喜欢使用[Webmachine](https://github.com/webmachine/webmachine)和[Roar](https://github.com/trailblazer/roar)）——先不用实现方法，我们要做测试优先开发，还记得吧？
 
 #### 2. Tell your provider that it needs to honour the pact file you made earlier
 
@@ -181,3 +183,5 @@ Rinse and repeat.
 #### 5. Keep going til you're green
 
 Yay! Your Animal Service provider now honours the pact it has with your Zoo App consumer. You can now have confidence that your consumer and provider will play nicely together.
+
+[roar]: 
