@@ -135,18 +135,18 @@ end
 
 使用你所选择的框架创建API类（Pact的作者更喜欢使用[Webmachine](https://github.com/webmachine/webmachine)和[Roar](https://github.com/trailblazer/roar)）——先不用实现方法，我们要做测试优先开发，还记得吧？
 
-#### 2. Tell your provider that it needs to honour the pact file you made earlier
+#### 2. 告诉提供者需要遵守之前的pact文件中的规约
 
-Require "pact/tasks" in your Rakefile.
+在Rakefile中引入“pact/tasks”。
 
 ```ruby
 # In Rakefile
 require 'pact/tasks'
 ```
 
-Create a `pact_helper.rb` in your service provider project. The recommended place is `spec/service_consumers/pact_helper.rb`.
+在服务提供者项目中创建名为`pact_helper.rb`的文件。推荐放在`spec/service_consumers/pact_helper.rb`下。
 
-See [Verifying Pacts](https://github.com/realestate-com-au/pact/wiki/Verifying-pacts) and the [Provider](documentation/configuration.md#provider) section of the Configuration documentation for more information.
+更多信息，查看配置文档中的 [Verifying Pacts](https://github.com/realestate-com-au/pact/wiki/Verifying-pacts)和[Provider](documentation/configuration.md#provider)章节。
 
 ```ruby
 # In specs/service_consumers/pact_helper.rb
@@ -166,22 +166,21 @@ Pact.service_provider "Animal Service" do
 end
 ```
 
-#### 3. Run your failing specs
+#### 3. 运行失败的测试
 
     $ rake pact:verify
+恭喜你！现在你有一个失败的测试需要通过了。
 
-Congratulations! You now have a failing spec to develop against.
-
-At this stage, you'll want to be able to run your specs one at a time while you implement each feature. At the bottom of the failed pact:verify output you will see the commands to rerun each failed interaction individually. A command to run just one interaction will look like this:
+在这一阶段，你可能会想要在每实现一个特性之后能够只运行众多用例中的某一个。在pact:verify的失败输出结果的底部，你可以看到用于重新独立运行每条失败的请求的命令。只运行一条请求的命令类似这样：
 
     $ rake pact:verify PACT_DESCRIPTION="a request for an alligator" PACT_PROVIDER_STATE="an alligator exists"
 
-#### 4. Implement enough to make your first interaction spec pass
+#### 4. 实现代码让你的第一个测试用例通过
 
-Rinse and repeat.
+然后重复上述步骤。
 
-#### 5. Keep going til you're green
+#### 5. 继续直到所有测试通过
 
-Yay! Your Animal Service provider now honours the pact it has with your Zoo App consumer. You can now have confidence that your consumer and provider will play nicely together.
+哇！你的Animal Service现在已经可以遵守与你的Zoo App消费者之间的契约了。现在你就有信心让你的消费者和提供者能够一起很好地工作了。
 
 [roar]: 
