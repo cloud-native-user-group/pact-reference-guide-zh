@@ -1,18 +1,19 @@
-# Matching
+# 匹配
 
-This section describes the various request/response matching techniques available in your `Consumer` tests. Note the examples below demonstrate use of the Ruby DSL, please refer to your particular language and framework as implementations differ.
+本节描述在`消费者`端测试时可用的不同种类的请求/响应匹配技术。注意，以下演示的例子使用的是Ruby DSL，因为各种实现有所不同，请参考自己所使用的特定语言和框架。
 
-###### NOTE
-*If you are writing tests on the `Consumer` side to a different language on the `Provider` side, you must ensure you use a common Pact Specification between them or you will be unable to validate.*
+###### 注意
 
-*e.g. If you are using v2 matching with the JS Consumer Pact DSL with a .NET provider, this will not work as the .NET provider only supports v1.1. In this case, you would need to use only v1.1 compatible matching on the `Consumer` side.*
+*如果在`消费者`端编写测试时所使用的语言与`提供者`端不同，必须确保两者使用的是共同的Pact规范，否则就无法进行验证。*
+
+*比如，如果你使用的是JS消费者端Pact DSL的v2版本，而提供者端是.NET，那就没法工作了，因为.NET的提供者只支持v1.1版本。这种情况下，你就只能在`消费者`端使用v1.1以保持兼容。*
 
 
-### Regular expressions 
+### 正则表达式 
 
-Sometimes you will have keys in a request or response with values that are hard to know beforehand - timestamps and generated IDs are two examples.
+有时请求或响应中的某些键值是事先无法知道的——比如时间戳或者生成的ID。
 
-What you need is a way to say "I expect something matching this regular expression, but I don't care what the actual value is".
+你所需要的是能够以某种方式表达“我期望某些东西能够匹配这个正则表达式，但我不关心其实际值具体是多少”。
 
 ```ruby
 animal_service.given("an alligator named Mary exists").
@@ -32,9 +33,9 @@ animal_service.given("an alligator named Mary exists").
     })
 ```
 
-Note the use of the `Pact::Term`. When you run the Consumer tests, the mock server will return the value that you specified to "generate", and when you verify the pact in the Provider codebase, it will ensure that the value at that key matches the specified regular expression.
+注意`Pact::Term`的用法。当你跑消费者的测试的时候，模拟的服务将会返回你所指定“生成”的值，然后当你在提供者的代码库中校验契约的时候，它可以确保该键值与指定的正则表达式相匹配。
 
-You can also use `Pact::Term` for request matching.
+你也可以对请求匹配使用`Pact::Term`。
 
 ```ruby
 animal_service.given("an alligator named Mary exists").
@@ -49,7 +50,7 @@ animal_service.given("an alligator named Mary exists").
     status: 200, ...)
 ```
 
-The `matcher` will be used to ensure that the actual request query was in the right format, and the value specified in the `generate` field will be the one that is replayed against the provider as an example of what a real value would look like. This means that your provider states can still use known values to set up their data, but your Consumer tests can generate data on the fly.
+`matcher`用于确保实际请求是正确的格式，在`generate`字段中所指定的值将会作为一个向提供者进行重放时所使用的真实值的例子。这意味着提供者状态中仍然可以使用已知的值来创建数据，但是消费者测试中可以互不影响地生成数据。
 
 You can use `Pact::Term` for request and response header values, the request query, and inside request and response bodies. Note that regular expressions can only be used on Strings. Furthermore, request queries, when specified as strings are just matched as normal String - no flexible ordering of parameters is catered for. For flexible ordering, specify it as a Hash, which in turn may include `Pact::Terms`
 
