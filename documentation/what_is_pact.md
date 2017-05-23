@@ -35,9 +35,9 @@ Pact框架家族提供对[消费者驱动的契约](http://martinfowler.com/arti
 
 ### 演讲与展示
 
-关于Pact的介绍，参见Pact作者之一的如下[关于Pact的演讲](http://www.infoq.com/presentations/pact) 及幻灯片。
+关于Pact的介绍，参见Pact作者之一的如下[关于Pact的演讲](http://www.infoq.com/presentations/pact)及幻灯片。
 <p style="text-align: center;">
-<iframe src="http://www.slideshare.net/slideshow/embed_code/key/f4e6DF51EttgzJ" width="595" height="485" frameborder="0" marginwidth="0" marginheight="0" scrolling="no" style="border:1px solid #CCC; border-width:1px; margin-bottom:5px; max-width: 100%;" allowfullscreen> </iframe> <div style="margin-bottom:5px"> <strong> <a href="http://www.slideshare.net/bethesque/pact-44565612" title="Consumer-Driven Contracts with Pact (Sydney API Days 2015)" target="_blank">Consumer-Driven Contracts with Pact (Sydney API Days 2015)</a> </strong> from <strong><a target="_blank" href="http://www.slideshare.net/bethesque">Beth Skurrie</a></strong> </div>
+<iframe src="http://www.slideshare.net/slideshow/embed_code/key/f4e6DF51EttgzJ" width="595" height="485" frameborder="0" marginwidth="0" marginheight="0" scrolling="no" style="border:1px solid #CCC; border-width:1px; margin-bottom:5px; max-width: 100%;" allowfullscreen> </iframe> <div style="margin-bottom:5px"> <strong> <a href="http://www.slideshare.net/bethesque/pact-44565612" title="Consumer-Driven Contracts with Pact (Sydney API Days 2015)" target="_blank">Consumer-Driven Contracts with Pact (Sydney API Days 2015)</a> </strong> 来自于 <strong><a target="_blank" href="http://www.slideshare.net/bethesque">Beth Skurrie</a></strong> </div>
 </p>
 
 具体到JVM相关的演讲，在[MelbJVM](http://www.meetup.com/en-AU/Melbourne-Java-JVM-Users-Group/)四月的meet-up和[Melbourne Microservices](http://www.meetup.com/en-AU/Melbourne-Microservices/)六月的meet-up上曾进行过名为[Deploy with Confidence!](https://www.youtube.com/watch?v=h-79QmIV824)的演讲。演讲幻灯片在[这里](media/Pact%20-%20Deploy%20with%20Confidence!.pdf)。
