@@ -10,7 +10,7 @@
    * [验证契约](documentation/verifying_pacts.md)
    * [提供者状态](documentation/provider_states.md)
    * [使用Pact Broker共享契约](documentation/sharings_pacts.md)
-* [Implementation guides](documentation/implementation_guides.md)
+* [各种实现指南](documentation/implementation_guides.md)
    * [Ruby](documentation/ruby.md)
        * [Verifying Pacts](documentation/ruby/verifying_pacts.md)
        * [Configuration](documentation/ruby/configuration.md)
