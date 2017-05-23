@@ -1,4 +1,5 @@
 {
+    "language": "zh-hans",
     "plugins": [
         "edit-link",
         "prism",
