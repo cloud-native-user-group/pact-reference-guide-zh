@@ -1,11 +1,12 @@
-# Provider States
+# 提供者状态
 
-Each interaction in a pact should be verified in isolation, with no context maintained from the previous interactions. Tests that depend on the outcome of previous tests are brittle and land you back in integration test hell, which is the nasty place you're trying to escape by using pacts.
+契约中的各个交互应该是在互相隔离状态下进行验证的，不得持有前一个交互中的上下文。依赖于之前测试产出结果的测试将会是脆弱的，而且会将你重新陷入到集成测试的泥潭中，而这正是想通过使用契约测试来极力摆脱的困境。
 
-So how do you test a request that requires data to already exist on the provider? Provider states allow you to set up data on the provider by injecting it straight into the data source before the interaction is run, so that it can make a response that matches what the consumer expects. The name of the provider state is specified in the `given` clause of an interaction in the consumer, and then used to find the block of code to run in the provider to set up the right data. If you need to stub a downstream system, or return an error response that is difficult to cause in the normal scheme of things (e.g. a 500), this is the place where you can set up stubs.
+那么怎样测试那些依赖于提供者中已存在的数据的请求呢？提供者状态允许你在交互发生前就可以向数据源注入数据，实现对提供者预置数据，这样就可以生成与消费者期望相匹配的响应了。消费者状态的名字是在消费者交互中使用given语句指定的，然后用于寻找在提供者中运行的代码块，以设置正确的数据。如果需要对下游系统打桩，或者返回正常情形下难以产生的响应（比如500错误），这里也可以用于设置打桩。
 
-Provider states also allow the consumer to make the same request with different expected responses (e.g. different response codes, or the same resource with a different subset of data).
+提供者状态也可以允许消费者对同一请求测试不同的期望响应（例如不同的响应码，或者同一资源的不同数据子集）。
 
-Keep in mind that a provider state is all about the state of the *provider* (eg. what data is there, how it is going to handle a given response), not about the state of the consumer, or about what is in the request.
+请记住提供者状态都是关于提供者的状态的（例如，有什么样的数据，怎样处理所得到的响应），而不是关于消费者状态的，也不是关于请求中有哪些东西的。
 
-Refer to the the [Ruby example ](./ruby/provider_states.md)to see how this plays out in code.
+关于如何在代码中玩转这些，请参考[Ruby例程](./ruby/provider_states.md)。
+
