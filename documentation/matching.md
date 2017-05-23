@@ -1,18 +1,19 @@
-# Matching
+# 匹配
 
-This section describes the various request/response matching techniques available in your `Consumer` tests. Note the examples below demonstrate use of the Ruby DSL, please refer to your particular language and framework as implementations differ.
+本节描述在`消费者`端测试时可用的不同种类的请求/响应匹配技术。注意，以下演示的例子使用的是Ruby DSL，因为各种实现有所不同，请参考自己所使用的特定语言和框架。
 
-###### NOTE
-*If you are writing tests on the `Consumer` side to a different language on the `Provider` side, you must ensure you use a common Pact Specification between them or you will be unable to validate.*
+###### 注意
 
-*e.g. If you are using v2 matching with the JS Consumer Pact DSL with a .NET provider, this will not work as the .NET provider only supports v1.1. In this case, you would need to use only v1.1 compatible matching on the `Consumer` side.*
+*如果在`消费者`端编写测试时所使用的语言与`提供者`端不同，必须确保两者使用的是共同的Pact规范，否则就无法进行验证。*
+
+*比如，如果你使用的是JS消费者端Pact DSL的v2版本，而提供者端是.NET，那就没法工作了，因为.NET的提供者只支持v1.1版本。这种情况下，你就只能在`消费者`端使用v1.1以保持兼容。*
 
 
-### Regular expressions 
+### 正则表达式
 
-Sometimes you will have keys in a request or response with values that are hard to know beforehand - timestamps and generated IDs are two examples.
+有时请求或响应中的某些键值是事先无法知道的——比如时间戳或者生成的ID。
 
-What you need is a way to say "I expect something matching this regular expression, but I don't care what the actual value is".
+你所需要的是能够以某种方式表达“我期望某些东西能够匹配这个正则表达式，但我不关心其实际值具体是多少”。
 
 ```ruby
 animal_service.given("an alligator named Mary exists").
@@ -32,9 +33,9 @@ animal_service.given("an alligator named Mary exists").
     })
 ```
 
-Note the use of the `Pact::Term`. When you run the Consumer tests, the mock server will return the value that you specified to "generate", and when you verify the pact in the Provider codebase, it will ensure that the value at that key matches the specified regular expression.
+注意`Pact::Term`的用法。当你跑消费者的测试的时候，模拟的服务将会返回你所指定“生成”的值，然后当你在提供者的代码库中校验契约的时候，它可以确保该键值与指定的正则表达式相匹配。
 
-You can also use `Pact::Term` for request matching.
+你也可以对请求匹配使用`Pact::Term`。
 
 ```ruby
 animal_service.given("an alligator named Mary exists").
@@ -49,13 +50,13 @@ animal_service.given("an alligator named Mary exists").
     status: 200, ...)
 ```
 
-The `matcher` will be used to ensure that the actual request query was in the right format, and the value specified in the `generate` field will be the one that is replayed against the provider as an example of what a real value would look like. This means that your provider states can still use known values to set up their data, but your Consumer tests can generate data on the fly.
+`matcher`用于确保实际请求是正确的格式，在`generate`字段中所指定的值将会作为一个向提供者进行重放时所使用的真实值的例子。这意味着提供者状态中仍然可以使用已知的值来创建数据，但是消费者测试中可以不受影响地生成数据。
 
-You can use `Pact::Term` for request and response header values, the request query, and inside request and response bodies. Note that regular expressions can only be used on Strings. Furthermore, request queries, when specified as strings are just matched as normal String - no flexible ordering of parameters is catered for. For flexible ordering, specify it as a Hash, which in turn may include `Pact::Terms`
+你可以将`Pact::Term`用于请求和响应头信息、请求查询以及请求和响应体内部。注意，正则表达式只能用于字符串。更进一步地，当请求查询被指定为字符串时，它只是被当做普通字符串来做匹配的——即不会考虑参数顺序的灵活匹配。要想实现顺序灵活匹配，需指定为哈希，哈希中轮流包含`Pact::Terms`。
 
-### Type matching
+### 类型匹配
 
-Often, you will not care what the exact value is at a particular path is, you just care that a value is present and that it is of the expected type. For this scenario, you can use `Pact::SomethingLike`.
+通常，你并不关注特定路径下的某个具体值是多少，你所关注的只是有这个值并且该值是所期望的类型。这种场景下，可以使用`Pact::SomethingLike`。
 
 ```ruby
 animal_service.given("an alligator named Mary exists").
@@ -75,9 +76,9 @@ animal_service.given("an alligator named Mary exists").
     })
 ```
 
-The mock server will return `{"name": "Mary", "age": 73}` in the consumer tests, but when `pact:verify` is run in the provider, it will just check that the type of the `name` value is a String, and that the type of the `age` value is a Fixnum. If you wanted an exact match on "Mary", but to allow any age, you would only wrap the `73` in the `Pact::SomethingLike`.
+消费者测试中的模拟服务将会返回`{"name": "Mary", "age": 73}` ，但是当在提供者端执行`pact:verify`时，只会检查`name`的值是否是字符串，以及`age`的值是否是整数。如果你想精确匹配“Mary”，但是又允许age为任何值，应该在 `Pact::SomethingLike`中只包含进`73`。
 
-For request matching, the mock server will allow any values of the same type to be used in the consumer test, but will replay the given values in `pact:verify`.
+对于请求匹配，模拟服务允许在消费者测试中使用任何类型的请求值，只要是同一类型即可，但是在`pact:verify`中将使用给定值进行重放。
 
 ```ruby
 animal_service.given("an alligator named Mary exists").
@@ -97,10 +98,11 @@ animal_service.given("an alligator named Mary exists").
     })
 ```
 
-### Query params
+### 查询参数
 
-Query params can be specified as a string or a hash.
-When specified as a string, an exact match will be performed. You may use a Pact::Term, but only over the query string as a whole. Note that the query params must already be URL encoded in the expectation. (This will change for v2 matching.)
+查询参数可以指定为字符串或者哈希。
+
+当指定为字符串时，将会执行精确匹配。你可以使用Pact::Term，但是只能将查询字符串作为一个整体进行匹配。注意，查询参数在期望中应该是已被编码过的URL。（这一功能在v2版本的匹配中将会被修改。）
 
 ```ruby
 
@@ -114,7 +116,7 @@ animal_service.given("some alligators exist").
 
 ```
 
-Alternatively, if the order of the query parameters does not matter, you can specify the query as a hash. You can embed Pact::Terms or Pact::SomethingLike inside the hash. Remember that all query params will be parsed to strings, so don't use a SomethingLike with a number.
+或者，如果查询参数的顺序并不重要，也可以将查询指定为哈希。你可以将Pact::Terms或Pact::SomethingLike嵌入到哈希内部去。请记住所有查询参数将会被解析为字符串，所以不要用SomethingLike去匹配数字类型。
 
 ```ruby
 
@@ -135,10 +137,10 @@ animal_service.given("some alligators exist").
 
 ```
 
-### Flexible matching
-**NOTE:** *Only available in Pact Specification 2.0+*
+### 灵活匹配
+**注意：** *仅对于Pact规范2.0及以上适用*
 
-Flexible length arrays:
+长度灵活的数组：
 
 ```ruby
 animal_service.given("an alligator named Mary exists").
@@ -156,9 +158,9 @@ animal_service.given("an alligator named Mary exists").
     })
 ```
 
-When the provider verification is run, it will ensure that each of the elements in the `children` array has a String name, an Integer age, and that there is at least one element in the array.
+当提供者端的校验运行时，将会确保`children`数组中的每个元素都有一个字符串类型的name、一个整数类型的age，以及数组中至少包含一个元素。
 
-To turn the v2 Pact serialisation on, you will need version 1.9.0 of the pact gem, and to configure the `pact_specification_version` in the mock service configuration in the consumer. The provider will pick it up automatically.
+要打开v2版本Pact的序列化功能，你需要1.9.0版本的pact gem包，并且在消费者端的模拟服务配置中对`pact_specification_version`进行配置。提供者端将会自动获取到它。
 
 ```ruby
 
@@ -174,6 +176,6 @@ Pact.service_consumer "Zoo App" do
 end
 ```
 
-#### Using v2.0 matching with the Pact Mock Service
+#### 在Pact模拟服务中使用v2.0的匹配
 
-To start the standalone pact mock service in v2 matching mode, specify `--pact-specification-version 2.0.0` in the startup options.
+要以v2匹配模式启动独立的pact模拟服务，只需在启动项中指定`--pact-specification-version 2.0.0`。

@@ -1,14 +1,14 @@
-## Usage - an example scenario
+## 使用——一个场景示例
 
-We're going to write an integration, with Pact tests, between a consumer, the Zoo App, and its provider, the Animal Service. In the Consumer project, we're going to need to need a model (the Alligator class) to represent the data returned from the Animal Service, and a client (the AnimalServiceClient) which will be responsible for making the HTTP calls to the Animal Service.
+我们打算用Pact测试在消费者Zoo App和提供者Animal Service之间写一个集成测试。在消费者项目中，我们打算使用一个模型（Alligator类）来表示从Animal Service返回的数据，以及一个客户端（AnimalServiceClient）来负责向Animal Service发起HTTP调用。
 
 ![Example](../media/zoo_app-animal_service.png)
 
-### In the Zoo App (consumer) project
+### 在Zoo App（消费者）项目中
 
-#### 1. Start with your model
+#### 1. 从模型类开始
 
-Imagine a model class that looks something like this. The attributes for a Alligator live on a remote server, and will need to be retrieved by an HTTP call to the Animal Service.
+设想有一个类似这样的模型类。Alligator的属性依赖于远程服务，需要通过向Animal Service发HTTP调用才能够取到。
 
 ```ruby
 class Alligator
@@ -24,9 +24,9 @@ class Alligator
 end
 ```
 
-#### 2. Create a skeleton Animal Service client class
+#### 2. 创建Animal Service客户端类的骨架
 
-Imagine an Animal Service client class that looks something like this.
+设想有一个类似这样的Animal Service客户端类。
 
 ```ruby
 require 'httparty'
@@ -40,9 +40,9 @@ class AnimalServiceClient
   end
 end
 ```
-#### 3. Configure the mock Animal Service
+#### 3. 配置模拟的Animal Service
 
-The following code will create a mock service on localhost:1234 which will respond to your application's queries over HTTP as if it were the real "Animal Service" app. It also creates a mock provider object which you will use to set up your expectations. The method name to access the mock service provider will be what ever name you give as the service argument - in this case "animal_service"
+以下代码将在`localhost:1234`端口上创建一个模拟的服务，将用于对应用的HTTP查询请求作出响应，就像是真实的“Animal Service”一样。这里还创建了一个模拟的提供者对象，将用于设置期望值。用于访问模拟的服务提供者的名字可以是你在服务参数中所给出的任何名字——在本例中为“animal_service”。
 
 ```ruby
 # In /spec/service_providers/pact_helper.rb
@@ -59,7 +59,7 @@ Pact.service_consumer "Zoo App" do
 end
 ```
 
-#### 4. Write a failing spec for the Animal Service client
+#### 4. 给Animal Service客户端写一个失败的测试用例
 
 ```ruby
 # In /spec/service_providers/animal_service_client_spec.rb
@@ -97,14 +97,15 @@ describe AnimalServiceClient, :pact => true do
 end
 ```
 
-#### 5. Run the specs
+#### 5. 执行测试用例
 
-Running the AnimalServiceClient spec will generate a pact file in the configured pact dir (`spec/pacts` by default).
-Logs will be output to the configured log dir (`log` by default) that can be useful when diagnosing problems.
+执行AnimalServiceClient用例，将会在一个可配置的pact文件夹（默认为`spec/pacts`）下生成一个pact文件。
 
-Of course, the above specs will fail because the Animal Service client method is not implemented, so next, implement your provider client methods.
+日志将输出在一个可配置的日志文件夹（默认为`log`）下，可用于诊断问题。
 
-#### 6. Implement the Animal Service client consumer methods
+当然，以上这个用例将会失败，因为Animal Service的客户端方法还没有实现，那么下一步，来实现你的提供者客户端代码吧。
+
+#### 6. 实现Animal Service的消费者客户端方法
 
 ```ruby
 class AnimalServiceClient
@@ -118,33 +119,34 @@ class AnimalServiceClient
 end
 ```
 
-#### 7. Run the specs again.
+#### 7. 再次运行该用例
 
-Green! You now have a pact file that can be used to verify your expectations of the Animal Service provider project.
+通过！现在你就会得到一个pact文件，可用于在Animal Service提供者端的项目中验证期望。
 
-Now, rinse and repeat for other likely status codes that may be returned. For example, consider how you want your client to respond to a:
-* 404 (return null, or raise an error?)
-* 500 (specifying that the response body should contain an error message, and ensuring that your client logs that error message will make your life much easier when things go wrong)
-* 401/403 if there is authorisation.
+现在，对于其他可能的返回状态码重复上述步骤。例如，考虑以下场景中你的客户端需要如何响应：
 
-### In the Animal Service (provider) project
+* 404（返回null，还是抛出错误？）
+* 500（具体说明响应体中所包含的错误信息，并确保客户端日志记录下了这些错误信息，这样当出现问题时会省很多事）
+* 校验授权时是否需要返回401/403。
 
-#### 1. Create the skeleton API classes
+### 在Animal Service（提供者）项目中
 
-Create your API class using the framework of your choice (the Pact authors have a preference for [Webmachine][webmachine] and [Roar][roar]) - leave the methods unimplemented, we're doing Test First Develoment, remember?
+#### 1. 创建API类的骨架
 
-#### 2. Tell your provider that it needs to honour the pact file you made earlier
+使用你所选择的框架创建API类（Pact的作者更喜欢使用[Webmachine](https://github.com/webmachine/webmachine)和[Roar](https://github.com/trailblazer/roar)）——先不用实现方法，我们要做测试优先开发，还记得吧？
 
-Require "pact/tasks" in your Rakefile.
+#### 2. 告诉提供者需要遵守之前的pact文件中的规约
+
+在Rakefile中引入“pact/tasks”。
 
 ```ruby
 # In Rakefile
 require 'pact/tasks'
 ```
 
-Create a `pact_helper.rb` in your service provider project. The recommended place is `spec/service_consumers/pact_helper.rb`.
+在服务提供者项目中创建名为`pact_helper.rb`的文件。推荐放在`spec/service_consumers/pact_helper.rb`下。
 
-See [Verifying Pacts](https://github.com/realestate-com-au/pact/wiki/Verifying-pacts) and the [Provider](documentation/configuration.md#provider) section of the Configuration documentation for more information.
+更多信息，查看配置文档中的 [Verifying Pacts](https://github.com/realestate-com-au/pact/wiki/Verifying-pacts)和[Provider](documentation/configuration.md#provider)章节。
 
 ```ruby
 # In specs/service_consumers/pact_helper.rb
@@ -164,20 +166,19 @@ Pact.service_provider "Animal Service" do
 end
 ```
 
-#### 3. Run your failing specs
+#### 3. 运行失败的测试
 
     $ rake pact:verify
+恭喜你！现在你有一个失败的测试需要通过了。
 
-Congratulations! You now have a failing spec to develop against.
-
-At this stage, you'll want to be able to run your specs one at a time while you implement each feature. At the bottom of the failed pact:verify output you will see the commands to rerun each failed interaction individually. A command to run just one interaction will look like this:
+在这一阶段，你可能会想要在每实现一个特性之后能够只运行众多用例中的某一个。在pact:verify的失败输出结果的底部，你可以看到用于重新独立运行每条失败的请求的命令。只运行一条请求的命令类似这样：
 
     $ rake pact:verify PACT_DESCRIPTION="a request for an alligator" PACT_PROVIDER_STATE="an alligator exists"
 
-#### 4. Implement enough to make your first interaction spec pass
+#### 4. 实现代码让你的第一个测试用例通过
 
-Rinse and repeat.
+然后重复上述步骤。
 
-#### 5. Keep going til you're green
+#### 5. 继续直到所有测试通过
 
-Yay! Your Animal Service provider now honours the pact it has with your Zoo App consumer. You can now have confidence that your consumer and provider will play nicely together.
+哇！你的Animal Service现在已经可以遵守与你的Zoo App消费者之间的契约了。现在你就有信心让你的消费者和提供者能够一起很好地工作了。

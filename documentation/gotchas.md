@@ -1,25 +1,25 @@
-# Gotcha's
+# 注意事项
 
-### Pact follows [Postel's law](https://en.wikipedia.org/wiki/Robustness_principle)
+### Pact遵循[伯斯塔尔法则](https://en.wikipedia.org/wiki/Robustness_principle)
 
-_Be conservative in what you send_ - when the mock server in the consumer project compares the actual request with the expected request, the actual request body is not allowed to contain fields that are not defined in the expected request body. We don't want the situation where our real consumer is "leaking" data that we don't know about.
+对发送严格——消费者项目中的模拟服务器在将实际请求与期望请求进行对比时，实际请求体中不允许包含在期望请求体中未定义的字段。我们不期望出现真实消费者“遗漏”发送数据的情形。
 
-_Be liberal in what you accept_ - when verifying a pact in the provider project, the response body and headers may contain fields that were not defined in the expectations, on the assumption that any extra field will be ignored by your consumer. This allows a provider to evolve without breaking existing consumers (unlike the bad old WSDL days).
+对接收宽容——当提供者项目中对契约进行验证时，响应体和响应头中可以包含期望中未定义的字段，假定任何多余字段都会被消费者所忽略。这允许提供者可以在不破坏已存在的消费者功能的前提下进行演进（不像过去使用WSDL的那些糟糕日子）。
 
-### But Pact breaks Postel's law for request headers
+### 但是Pact对于请求头并未遵循伯斯塔尔法则
 
-The exception to this is the request headers - we have found that frameworks tend to add their own headers, and that maintaining these can be extremely tedious, so be aware that if you are using a header that will change the behavior of the provider, you _must_ specify it in your expectations.
+对于请求头则有所不同——因为我们发现有些框架常常会在请求中加入自己的头信息，要维护这些会变得极其繁重，所以要注意如果你在使用会改变提供者行为的请求头，你应当自己在期望中明确定义。
 
-### An empty hash in the response means "allow any hash"
+### 响应中的空哈希意味着“允许任意的哈希”
 
-Following Postel's law, when verifying a pact in the provider project, the response body and headers may contain fields that were not defined in the expectations. This means that if you specify an empty hash, you are actually saying, "expect a hash here with anything in it".
+根据伯斯塔尔法则，当提供者项目中对契约进行验证时，响应体和响应头中可以包含期望中未定义的字段。这意味着如果你指定一个空哈希，实际上意思是说，“期望一个可以含有任何内容的哈希”。
 
-### You cannot expect a field to not be present in a response
+### 不能期望某个字段不出现在某一响应中
 
-Following Postel's law, the provider may return fields that the consumer will just ignore. The provider may have a pact with another consumer that requires those fields, so your consumer cannot tell the provider what it should not do. It can only specify what it should do.
+根据伯斯塔尔法则，提供者可能返回多余字段，消费者只需忽略就好。提供者可能和另外一个消费者之间的契约会需要那些字段，所以你的消费者不能去告诉提供者不应该去做哪些事情。消费者只应定义提供者应该去做什么事情。
 
-### Consumer language != Provider language
+### 消费者端语言 != 提供者端语言
 
-If you are writing tests on the Consumer side with a different language on the Provider side, you must ensure you use a common Pact Specification between them or you will be unable to validate the Pacts.
+如果在消费者端使用与提供者端不同的语言编写测试时，必须确保两者之间使用的是共同的Pact规范，否则就无法校验契约。
 
-e.g. If you are using v2 matching with the JS Consumer Pact DSL with a .NET provider, this will not work as the .NET provider only supports v1.1. In this case, you would need to use only v1.1 compatible matching on the Consumer side.
+例如，如果你在JS消费者端使用Pact DSL的v2版本规范和一个.NET的提供者端进行匹配时，就会无法工作，因为.NET提供者端只支持到v1.1版本规范。这种情况下，你就只能在消费者端使用v1.1版本以保持兼容。
