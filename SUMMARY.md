@@ -13,7 +13,7 @@
 * [各种实现指南](documentation/implementation_guides.md)
    * [Ruby](documentation/ruby.md)
        * [验证契约](documentation/ruby/verifying_pacts.md)
-       * [Configuration](documentation/ruby/configuration.md)
+       * [配置](documentation/ruby/configuration.md)
        * [Provider States](documentation/ruby/provider_states.md)
    * [JVM](documentation/jvm.md)
    * [.NET](documentation/net.md)

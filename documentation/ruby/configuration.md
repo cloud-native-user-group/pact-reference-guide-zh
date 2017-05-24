@@ -1,25 +1,25 @@
-# Configuration
+# 配置
 
-## Menu
+## 菜单
 
-#### Consumer and Provider configuration options
+#### 消费者与提供者配置选项
 * [diffformatter](#diff_formatter)
 * [logdir](#log_dir)
 * [logger](#logger)
 * [logger.level](#loggerlevel)
 
-#### Consumer only configuration options
+#### 仅适用于消费者的配置选项
 * [pactdir](#pact_dir)
 * [docdir](#doc_dir)
 * [docgenerator](#doc_generator)
 * [pactfilewritemode](#pactfile_write_mode)
 
-#### Provider only configuration options
+#### 仅适用于提供者的配置选项
 * [include](#include)
 
-## Consumer and Provider
+## 消费者与提供者
 
-### log_dir
+### log_dir（日志目录）
 
 ```ruby
 Pact.configure do | config |
@@ -27,9 +27,9 @@ Pact.configure do | config |
 end
 ```
 
-Default value: `./log`
+默认值为： `./log`
 
-### logger
+### logger（日志记录器）
 
 ```ruby
 Pact.configure do | config |
@@ -37,9 +37,9 @@ Pact.configure do | config |
 end
 ```
 
-Default value: file logger to the configured log_dir.
+默认值为：配置了log_dir为目录的日志文件记录器。
 
-### logger.level
+### logger.level（日志等级）
 
 ```ruby
 Pact.configure do | config |
@@ -47,9 +47,9 @@ Pact.configure do | config |
 end
 ```
 
-Default value: `Logger::DEBUG`
+默认值为： `Logger::DEBUG`
 
-### diff_formatter
+### diff_formatter（差异展示格式）
 
 ```ruby
 Pact.configure do | config |
@@ -57,9 +57,9 @@ Pact.configure do | config |
 end
 ```
 
-Default value: [:list](#list)
+默认值为： [:list](#list)
 
-Options: [:unix](#unix), [:list](#list), [:embedded](#embedded), [Custom Diff Formatter](#custom-diff-formatter)
+可选项有：[:unix](#unix), [:list](#list), [:embedded](#embedded), [Custom Diff Formatter](#custom-diff-formatter)
 
 
 #### :unix
@@ -74,9 +74,9 @@ Options: [:unix](#unix), [:list](#list), [:embedded](#embedded), [Custom Diff Fo
 <img src="https://github.com/realestate-com-au/pact/raw/master/documentation/diff_formatter_embedded.png" width="700">
 
 
-#### Custom Diff Formatter
+#### 定制差异展示格式
 
-Any object can be used that responds to `call`, accepting the argument `diff`.
+使用可接受`diff`作为参数，并提供`call`方法调用作为响应的任何对象。
 
 ```ruby
 class MyCustomDiffFormatter
@@ -93,9 +93,9 @@ end
 ```
 
 
-## Consumer
+## 消费者
 
-### pact_dir
+### pact_dir（契约目录）
 
 ```ruby
 Pact.configure do | config |
@@ -103,9 +103,9 @@ Pact.configure do | config |
 end
 ```
 
-Default value: `./spec/pacts`
+默认值为： `./spec/pacts`
 
-### doc_generator
+### doc_generator（文档生成器）
 
 ```ruby
 Pact.configure do | config |
@@ -113,26 +113,25 @@ Pact.configure do | config |
 end
 ```
 
-Default value: none
+默认值为： none
 
-Options: [:markdown](#markdown), [Custom Doc Generator](#custom-doc-generator)
+可选项有： [:markdown](#markdown), [Custom Doc Generator](#custom-doc-generator)
 
 #### :markdown
 
-Generates Markdown documentation based on the contents of the pact files created in this consumer. Files are created in `${Pact.configuration.doc_dir}/markdown`.
+基于消费者创建的契约文件的内容生成Markdown文档。文档文件生成在：`${Pact.configuration.doc_dir}/markdown`路径。
 
-#### Custom Doc Generator
+#### 自定义文档生成器
 
-Any object can be used that responds to `call`, accepting the arguments `pact_dir` and `doc_dir`.
+使用可接受`pact_dir`和`doc_dir`作为参数，并提供`call`方法调用作为响应的任何对象。
 
 ```ruby
 Pact.configure do | config |
   config.doc_generator = lambda{ | pact_dir, doc_dir | generate_some_docs(pact_dir, doc_dir) }
 end
-
 ```
 
-#### doc_dir
+#### doc_dir（文档目录）
 
 ```ruby
 Pact.configure do | config |
@@ -140,13 +139,15 @@ Pact.configure do | config |
 end
 ```
 
-Default value: `./doc`
+默认值为： `./doc`
 
 
-### pactfile_write_mode
+### pactfile_write_mode（契约文件写入模式）
 
-Default value: `:overwrite`
-Options: `:overwrite`, `:update`, `:smart`, `:none`
+默认值为： `:overwrite`
+可选项有： `:overwrite`, `:update`, `:smart`, `:none`
+
+默认情况下，当使用pacts运行任何测试用例时，契约文件每次都会被彻底覆盖（从头开始）。这意味着如果某些交互没有在最近一次rspec运行时被执行的话，实际上会被从契约文件里删除掉。
 
 By default, the pact file will be overwritten (started from scratch) every time any rspec runs any spec using pacts. This means that if there are interactions that haven't been executed in the most recent rspec run, they are effectively removed from the pact file. If you have long running pact specs (e.g. they are generated using the browser with Capybara) and you are developing both consumer and provider in parallel, or trying to fix a broken interaction, it can be tedious to run all the specs at once. In this scenario, you can set the pactfile_write_mode to :update. This will keep all existing interactions, and update only the changed ones, identified by description and provider state. The down side of this is that if either of those fields change, the old interactions will not be removed from the pact file. As a middle path, you can set pactfile_write_mode to :smart. This will use :overwrite mode when running rake (as determined by a call to system using 'ps') and :update when running an individual spec. :none will not generate any pact files (with pact-mock_service >= 0.8.1).
 
