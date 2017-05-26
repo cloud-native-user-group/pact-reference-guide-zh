@@ -1,8 +1,8 @@
-# Provider States
+# 提供者状态
 
-See [Provider States](../provider_states.md) for an introduction into this advanced topic.
+关于这一高级话题，请先阅读[提供者状态](../provider_states.md)一节的介绍。
 
-The text in the provider state should make sense when you read it as follows (this is how the auto-generated documentation reads):
+提供者状态中的文本对于读者来说应该具有足够清楚的意义，如下（这是自动生成的文档为读者呈现出的）：
 
 
 Given **an alligator with the name Mary exists** \*
@@ -10,12 +10,12 @@ Upon receiving **a request to retrieve an alligator by name** \*\* from Some Con
 With {"method" : "get", "path" : "/alligators/Mary" }
 Some Provider will respond with { "status" : 200, ...}
 
-\* This is the provider state
-\*\* This is the request description
+\* 这是提供者状态
+\*\* 这是请求描述
 
-### Consumer code base
+### 消费者代码库
 
-For example, some code that creates a pact in a consumer project might look like this:
+举个例子，消费者项目中用于创建一段契约的代码可能看起来像这样：
 
 ```ruby
 describe MyServiceProviderClient do
@@ -52,9 +52,9 @@ describe MyServiceProviderClient do
 end
 ```
 
-### Provider codebase
+### 提供者代码库
 
-To define service provider states that create the right data for the provider states described above, write the following in the service provider project. (The consumer name here must match the name of the consumer configured in your consumer project for it to correctly find these provider states.)
+根据上述的提供者状态，要相应地定义能够创建适当数据的服务提供者状态，可以在服务提供者项目中这样来写。（此处的消费者名称必须与消费者项目中配置的消费者名称相符，才能正确地找到这些提供者状态。）
 
 ```ruby
 # In /spec/service_consumers/provider_states_for_my_service_consumer.rb
@@ -79,7 +79,7 @@ Pact.provider_states_for 'My Service Consumer' do
 
 end
 ```
-Require your provider states file in the `pact_helper.rb`
+在pact_helper.rb中引入上面所写的提供者状态文件
 
 ```ruby
 # In /spec/service_consumers/pact_helper.rb
@@ -87,9 +87,9 @@ Require your provider states file in the `pact_helper.rb`
 require './spec/service_consumers/provider_states_for_my_service_consumer.rb'
 ```
 
-### Base state
+### 基状态
 
-To define code that should run before/after each interaction for a given consumer, regardless of whether a provider state is specified or not, define set_up/tear_down blocks with no wrapping provider_state.
+要定义一些能够对于给定消费者的每次交互前/后都会运行的代码，而不管是否指定了提供者状态，只需将set_up/tear_down代码块不被provider_state所包住即可。
 
 ```ruby
 Pact.provider_states_for 'My Service Consumer' do
@@ -106,9 +106,9 @@ Pact.provider_states_for 'My Service Consumer' do
 end
 ```
 
-### Global state
+### 全局状态
 
-Global state will be set up before consumer specific base state. Avoid using the global set up for creating data as it will make your tests brittle when more than one consumer exists.
+全局状态将会在消费者特定的基状态被设置前而设置。避免使用全局设置来创建数据，因为当存在多个消费者时这会使测试变得脆弱。
 
 ```ruby
 Pact.set_up do
@@ -120,9 +120,9 @@ Pact.tear_down do
 end
 ```
 
-### Testing error responses
+### 测试错误响应
 
-It is important to test how your client will handle error responses.
+测试客户端如何处理错误响应是非常重要的。
 
 ```ruby
 # Consumer codebase
@@ -165,9 +165,9 @@ Pact.provider_states_for 'My Service Consumer' do
 end
 ```
 
-### Including modules for use in set_up and tear_down
+### 包含模块以便在set_up和tear_down中使用
 
-Any modules included this way will be available in the set_up and tear_down blocks. One common use of this to include factory methods for setting up data so that the provider states file doesn't get too bloated.
+按照这种方法包含进来的任意模块在set_up与tear_down代码块中都是可用的。 这样做的一个常见用途是将用于设置数据的工厂方法包含进来，于是提供者状态文件将不会过于臃肿。
 
 ```ruby
 Pact.configure do | config |
