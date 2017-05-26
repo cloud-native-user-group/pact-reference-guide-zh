@@ -147,13 +147,11 @@ end
 默认值为： `:overwrite`
 可选项有： `:overwrite`, `:update`, `:smart`, `:none`
 
-默认情况下，当使用pacts运行任何测试用例时，契约文件每次都会被彻底覆盖（从头开始）。这意味着如果某些交互没有在最近一次rspec运行时被执行的话，实际上会被从契约文件里删除掉。
+默认情况下，当使用pacts运行任何测试用例时，契约文件每次都会被彻底覆盖（从头开始）。这意味着如果某些交互没有在最近一次rspec运行时被执行的话，实际上会被从契约文件里删除掉。如果你有运行时间很长的pact用例（比如，通过Capybara使用浏览器生成的）而且正在并行开发消费者与提供者，或者试着修复挂掉的测试，一次运行所有的测试将会是很繁重的。这种场景下，你可以将pactfile_write_mode值设置为:update。这时将会保留所有已存在的交互，而且只更新那些发生变化了的交互，以描述和提供者状态字段作为识别标志。这样做不好的一面是如果这些字段任何一个发生了变化，那么旧有的交互将不会被从契约文件中移除。作为一个两全之策，捏可以将pactfile_write_mode值设置为:smart。这样当运行rake（系统通过使用'ps'命令调用来进行判断）的时候将会使用:overwrite模式，而运行单个用例的时候将会使用:update模式。该值设置为:none时将不会生成任何契约文件（在pact-mock_service版本大于等于0.8.1时）。
 
-By default, the pact file will be overwritten (started from scratch) every time any rspec runs any spec using pacts. This means that if there are interactions that haven't been executed in the most recent rspec run, they are effectively removed from the pact file. If you have long running pact specs (e.g. they are generated using the browser with Capybara) and you are developing both consumer and provider in parallel, or trying to fix a broken interaction, it can be tedious to run all the specs at once. In this scenario, you can set the pactfile_write_mode to :update. This will keep all existing interactions, and update only the changed ones, identified by description and provider state. The down side of this is that if either of those fields change, the old interactions will not be removed from the pact file. As a middle path, you can set pactfile_write_mode to :smart. This will use :overwrite mode when running rake (as determined by a call to system using 'ps') and :update when running an individual spec. :none will not generate any pact files (with pact-mock_service >= 0.8.1).
+## 提供者
 
-## Provider
-
-Pact uses RSpec and Rack::Test to create dynamic specs based on the pact files. RSpec configuration can be used to modify test behaviour if there is not an appropriate Pact feature. If you wish to use the same spec_helper.rb file as your unit tests, require it in the pact_helper.rb, but remember that the RSpec configurations for your unit tests may or may not be what you want for your pact verification tests.
+Pact使用RSpec和Rack::Test在契约文件基础上生成动态用例。如果没有合适的Pact配置特性的话，RSpec相关配置也可用于修改测试行为。如果你希望使用和单元测试一样的spec_helper.rb文件，就在pact_helper.rb中引入它，但是要注意，你为单元测试配置的RSpec选项有可能是，但也有可能不是你的pact验证测试中所需要的。
 
 ### include
 
@@ -163,4 +161,4 @@ Pact.configure do | config |
 end
 ```
 
-To make modules available in the provider state set_up and tear_down blocks, include them in the configuration as shown below. One common use of this to include factory methods for setting up data so that the provider states file doesn't get too bloated.
+要想在提供者状态的set_up和tear_down代码块中使用某些模块，就需要在配置中将其包含进来，如下所示。这样做的一个常见用途是将用于设置数据的工厂方法包含进来，于是提供者状态文件将不会过于臃肿。
