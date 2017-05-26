@@ -6,8 +6,11 @@
 
 
 Given **an alligator with the name Mary exists** \*
+
 Upon receiving **a request to retrieve an alligator by name** \*\* from Some Consumer
+
 With {"method" : "get", "path" : "/alligators/Mary" }
+
 Some Provider will respond with { "status" : 200, ...}
 
 \* 这是提供者状态
