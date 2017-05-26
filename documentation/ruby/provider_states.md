@@ -14,6 +14,7 @@ With {"method" : "get", "path" : "/alligators/Mary" }
 Some Provider will respond with { "status" : 200, ...}
 
 \* 这是提供者状态
+
 \*\* 这是请求描述
 
 ### 消费者代码库
