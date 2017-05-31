@@ -1,5 +1,5 @@
 # .NET
 
-PactNet is currently compliant to Pact Specification Version 1.1.
+PactNet目前遵守Pact规范1.1版本。
 
-Head to the [.NET Pact website](https://github.com/SEEK-Jobs/pact-net) to get started using Pact in .NET (C#).
+访问[.NET Pact站点](https://github.com/SEEK-Jobs/pact-net)以获取.NET上的Pact的快速上手指南。
