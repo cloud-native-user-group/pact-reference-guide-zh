@@ -1,4 +1,4 @@
-# Consumer
+# 消费者端
 
 这个代码库提供了一个用于创建pacts的JavaScript DSL。下面的指南将帮助你选择你最喜欢的测试框架来开始使用Pact：
 
