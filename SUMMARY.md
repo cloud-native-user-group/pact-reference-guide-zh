@@ -37,6 +37,6 @@
 * [FAQ](faq/README.md)
    * [Convince me](faq/convinceme.md)
 * [获得帮助](getting_help/README.md)
-* [Contributing](contributing/README.md)
+* [贡献力量](contributing/README.md)
 * [Contributors](about_pact/README.md)
 * [Roadmap](roadmap/README.md)

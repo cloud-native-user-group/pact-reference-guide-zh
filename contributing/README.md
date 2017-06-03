@@ -1,11 +1,11 @@
-# Contributing
+# 贡献力量
 
-1. Fork it
-2. Create your feature branch (`git checkout -b my-new-feature`)
-3. Commit your changes (`git commit -am 'Add some feature'`)
-4. Push to the branch (`git push origin my-new-feature`)
-5. Create new Pull Request
+1. Fork一下
+2. 创建你的特性分支 （`git checkout -b my-new-feature`）
+3. 提交修改 （`git commit -am 'Add some feature'`）
+4. 推送到分支 （`git push origin my-new-feature`）
+5. 新建Pull Request
 
-If you would like to implement `Pact` in another language, please check out the [Pact specification](https://github.com/bethesque/pact-specification) and have a chat to one of us on the [pact-dev Google group](https://groups.google.com/forum/#!forum/pact-dev).
+如果你想用另一种语言实现`Pact`，请检出[Pact规范](https://github.com/bethesque/pact-specification)并和我们[pact-dev Google群组](https://groups.google.com/forum/#!forum/pact-dev)中的任意一员取得联系。
 
-The vision is to have a compatible `Pact` implementation in all the commonly used languages, your help would be greatly appreciated!
+我们的愿景是在所有通用语言上拥有可兼容的`Pact`实现，非常感谢您的帮助！
