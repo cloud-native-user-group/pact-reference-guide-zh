@@ -1,3 +1,3 @@
 # Javascript
 
-Pact support for JavaScript and Node JS is currently in active development.
+Pact对JavaScript和Node JS的支持目前正在积极开发中。

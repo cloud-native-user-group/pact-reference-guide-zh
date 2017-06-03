@@ -1,8 +1,8 @@
-# Provider
+# 提供者端
 
-Provider side Pact testing, involves verifying that the contract - the Pact file - can be satisfied by the Provider.
+提供者端的Pact测试，包括验证契约-Pact文件-可以由提供者端满足。
 
-1. Start your Provider API:
+1. 启动你的提供者端API:
 
 	```go
 	mux := http.NewServeMux()
@@ -38,15 +38,11 @@ Provider side Pact testing, involves verifying that the contract - the Pact file
 	go http.ListenAndServe(":8000"), mux)
 	```
 
-	Note that the server has 2 endpoints: `/states` and `/setup` that allows the
-	verifier to setup
-	[provider states](http://docs.pact.io/documentation/provider_states.html) before
-	each test is run.
+	注意服务器有两个端点：`/states`以及可以让验证在每个测试运行前去设置[提供者端状态](http://docs.pact.io/documentation/provider_states.html)的`/setup`。
 
-2. Verify provider API
+2. 验证提供者端API
 
-	You can now tell Pact to read in your Pact files and verify that your API will
-	satisfy the requirements of each of your known consumers:
+	你现在可以告诉Pact读取Pact文件并且验证你的API会满足已知的每个消费者的需求：
 
 	```go
 	err := pact.VerifyProvider(&types.VerifyRequest{
@@ -61,13 +57,8 @@ Provider side Pact testing, involves verifying that the contract - the Pact file
 	}
 	```
 
-  Pact reads the specified pact files (from remote or local sources) and replays
-  the interactions against a running Provider. If all of the interactions are met
-  we can say that both sides of the contract are satisfied and the test passes.
+  Pact(从远程或者本地资源中)读取特定的pact文件并且对运行的提供者端重放。如果所有的交互都满足，我们可以说契约双方都满足，测试通过。
 
-	Note that `PactURLs` is a list of local pact files or remote based
-	urls (e.g. from a
 	[Pact Broker](http://docs.pact.io/documentation/sharings_pacts.html)).
-
-	See the [integration tests](https://github.com/pact-foundation/pact-go/blob/master/dsl/pact_test.go)
-	for a more complete E2E example.
+	注意`PactURLs`是本地pact文件的列表或者远程的基础url(比如来自一个[Pact Broker](http://docs.pact.io/documentation/sharings_pacts.html))。
+	更复杂的E2E测试的例子请查看[集成测试](https://github.com/pact-foundation/pact-go/blob/master/dsl/pact_test.go)

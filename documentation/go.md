@@ -1,23 +1,19 @@
 # Go
 
-Pact Go is currently in *beta* and supports Pact Specification v2.
+Pact Go的版本目前在*beta*并支持Pact v2规范。
 
-### Getting started
+### 开始使用
 
-[Download](https://github.com/pact-foundation/pact-go/releases) the latest release
-and then [install](https://github.com/pact-foundation/pact-go#installation) Pact Go.
+[下载](https://github.com/pact-foundation/pact-go/releases)最新的发布版本，然后[安装](https://github.com/pact-foundation/pact-go#installation) Pact Go。
 
 Navigate through the side menu to learn more about using Pact with Golang, or head
 to the [Go Pact website](https://github.com/pact-foundation/pact-go) for more detail.
+浏览侧边菜单，详细了解如何使用Pact的Golang版本，或者访问[Go Pact 网站](https://github.com/pact-foundation/pact-go)了解更多细节。
 
-### Go-Kit Example
+### Go-Kit例子
 
-The Pact Go repository has a detailed [Go Kit](https://github.com/go-kit/kit) [example](https://github.com/pact-foundation/pact-go/tree/master/examples/go-kit)
-demonstrating how Pact can be used to test Go Kit microservices.
+Pact Go代码库中有一个详细的[Go Kit](https://github.com/go-kit/kit) [例子](https://github.com/pact-foundation/pact-go/tree/master/examples/go-kit)，介绍如何使用Pact去测试Go Kit微服务。
 
+### 原生Go实现
 
-### Native Go Implementation
-
-There is also a version of Pact for Go (v1.1 compatible) that doesn't require
-running a daemon. If you don't need v2+ matching and would prefer to not run a
-daemon, consider using / contributing to [Pact Go](https://github.com/SEEK-Jobs/pact-go).
+还有一个Go版本的Pact(兼容pact v1.1)，不需要运行一个守护进程。如果你不需要v2+的匹配以及运行守护进程，可以考虑使用或者为[Pact Go](https://github.com/SEEK-Jobs/pact-go)贡献。

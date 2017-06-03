@@ -1,18 +1,17 @@
 # Jasmine / Karma
 
 ### Jasmine
-If you starting a new project, run `npm init` to get a `package.json` going.
+如果你新建了一个工程，运行`npm init`去初始化`package.json`的安装。
+在终端中，`package.json`的同一目录下，运行`npm install --save-dev --save-exact jasmine karma karma-jasmine karma-chrome-launcher karma-cli`去安装Jasmine和Karma。
 
-With a `package.json` file in place run `npm install --save-dev --save-exact jasmine karma karma-jasmine karma-chrome-launcher karma-cli` on your terminal to install Jasmine and Karma.
+一旦Jasmine安装完成，运行`npm install --save-dev --save-exact pact-consumer-js-dsl`安装DSL。
 
-Once you're ready to go with Jasmine install the DSL by running `npm install --save-dev --save-exact pact-consumer-js-dsl`.
+#### 设置 Karma
+运行`karma init`。选择**jasmine** 作为*测试框架*并且**拒绝** *使用require.js*。
 
-#### Setup Karma
-Run `karma init`. Answer **jasmine** for *testing framework* and **no** for *use require.js*.
+在`karma.conf.js`中告诉Karma关于`pact-consumer-js-dsl.js`。在`files: []`部分为`node_modules/pact-consumer-js-dsl/dist/pact-consumer-js-dsl.js`添加一个新的入口。
 
-Tell Karma about `pact-consumer-js-dsl.js` in `karma.conf.js`. In the `files: []` section add a new entry for `node_modules/pact-consumer-js-dsl/dist/pact-consumer-js-dsl.js`.
-
-Allow tests to load resources from `Pact Mock Server`. One way to do this is in the `karma.conf.js`, change `browsers: ['Chrome']` to,
+允许测试去加载`Pact Mock Server`。实现这个的一种方式是在`karma.conf.js`中将`browsers: ['Chrome']`修改为，
 
  ```javascript
 browsers: ['Chrome_without_security'],
@@ -23,7 +22,8 @@ customLaunchers: {
   }
 }
 ```
-Or `browsers: ['PhantomJS']` to:
+或者将`browsers: ['PhantomJS']` 改为：
+
 ```javascript
 browsers: ['PhantomJS_without_security'],
 customLaunchers: {
@@ -34,10 +34,11 @@ customLaunchers: {
 }
 ```
 
-Make sure the source and test files are included by Karma in the `karma.conf.js` in the files array.
+确认`karma.conf.js`的文件数组中中包含了源代码、测试文件。
 
-#### Test
-Write your Jasmine test like below:
+#### 测试
+像下面这样实现你的Jasmine测试：
+
 ```javascript
 describe("Client", function() {
   var client, helloProvider;
@@ -78,16 +79,20 @@ describe("Client", function() {
 });
 ```
 
-#### Running it
-Before running your test you have to start the Pact Mock Service. To do so, run the below
+#### 运行测试
+
+在运行测试前你需要首先启动Pact Mock服务。运行下面的命令
+
 ```bash
 bundle exec pact-mock-service -p 1234 --pact-specification-version 2.0.0 -l logs/pact.logs --pact-dir tmp/pacts
 ```
-The command will:
-* Create a new folder `logs` where you can check all the interactions received by the Mock Service
-* Create a new folder `tmp` where it will store all `Pacts` successfully verified by the test
 
-From there, type in `karma start` on your terminal to get your test executed. Once successful a new Pact file will be generated at `tmp/pacts/hello_consumer-hello_provider.json` that looks somewhat like this:
+这个命令会：
+* 生成一个新的 `logs` 文件夹，在这个目录你可以以日志的形式查看Mock服务里收到的所有交互内容
+* 生成一个新的 `tmp` 文件夹，这个目录将会保存测试成功验证的`Pact`文件
+
+在终端中输入`karma start`去执行测试。成功后会生成`tmp/pacts/hello_consumer-hello_provider.json`这样的pact文件，内容像下面一样：
+
 ```json
 {
   "consumer": {

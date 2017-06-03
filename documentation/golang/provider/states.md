@@ -1,29 +1,19 @@
-# Provider States
+# 提供者端状态
 
-Each interaction in a pact should be verified in isolation, with no context
-maintained from the previous interactions. So how do you test a request that
-requires data to exist on the provider? Provider states are how you achieve
-this using Pact.
+pact中的每个交互都应当是独立验证，不需要前面的交互动作中保存状态。所以如何测试一个需要在提供者端保留数据的请求？通过提供者端状态可以在Pact中实现这点。
 
-Provider states also allow the consumer to make the same request with different
-expected responses (e.g. different response codes, or the same resource with a
-different subset of data).
+提供者端状态也允许消费者端发起相同的请求但是期望的响应不同（比如，不同的响应码，或者相同资源的不同数据子集）。
 
-States are configured on the consumer side when you issue a dsl.Given() clause
-with a corresponding request/response pair.
+当你发出一个具有相应的请求/响应对的dsl.Given()子句，消费者端的状态就配置好了。
 
-Configuring the provider is a little more involved, and (currently) requires 2
-running API endpoints to retrieve and configure available states during the
-verification process. The two options you must provide to the dsl.VerifyRequest
-are:
+提供者端也需要一些配置，目前需要两个允许的API端点在验证的过程中去获取以及配置可用的状态。在dsl.VerifyRequest中必须提供的两个选项是：
 
 ```
 ProviderStatesURL: 		    GET URL to fetch all available states (see types.ProviderStates)
 ProviderStatesSetupURL: 	POST URL to set the provider state (see types.ProviderState)
 ```
 
-Example routes using the standard Go http package might look like this, note
-the `/states` endpoint returns a list of available states for each known consumer:
+使用标准的Go http包的路由例子看起来可能像这样，注意`/states`端点返回了每个已知消费者端的可用状态的列表：
 
 ```go
 // Return known provider states to the verifier (ProviderStatesURL):
@@ -65,4 +55,4 @@ mux.HandleFunc("/setup", func(w http.ResponseWriter, req *http.Request) {
 })
 ```
 
-See the examples or read more at http://docs.pact.io/documentation/provider_states.html.
+查看例子或者从 http://docs.pact.io/documentation/provider_states.html 阅读更多内容。

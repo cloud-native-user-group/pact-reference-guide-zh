@@ -1,14 +1,13 @@
 # Mocha / Node
 
 ### Mocha
-If you starting a new project, run `npm init` to get a `package.json` going.
+如果你新建了一个工程，运行`npm init`去初始化`package.json`的安装。
 
-With a `package.json` file in place run `npm install --save-dev --save-exact mocha` on your terminal to install [Mocha](https://mochajs.org/). Also run `npm install --save-dev --save-exact chai` to install the [Chai.js assertion library](http://chaijs.com/).
+在终端中，`package.json`的同一目录下，运行`npm install --save-dev --save-exact mocha`去安装[Mocha](https://mochajs.org/)。同时运行`npm install --save-dev --save-exact chai`去安装[Chai.js assertion library](http://chaijs.com/)。
+一旦Jasmine安装完成，运行`npm install --save-dev --save-exact pact-consumer-js-dsl`安装DSL。
 
-Once you're ready to go with mocha install the DSL by running `npm install --save-dev --save-exact pact-consumer-js-dsl`.
-
-#### Test
-Write your Mocha test like below - written with `ES2015` syntax.
+#### 测试
+像下面这样用`ES2015`语法去实现Mocha测试。
 
 ```javascript
 import { expect } from 'chai'
@@ -55,16 +54,18 @@ describe("Client", () => {
 });
 ```
 
-#### Running it
-Before running your test you have to start the Pact Mock Service. To do so, run the below
+#### 运行测试
+在运行测试前你需要首先启动Pact Mock服务。运行下面的命令
+
 ```bash
 bundle exec pact-mock-service -p 1234 --pact-specification-version 2.0.0 -l logs/pact.logs --pact-dir tmp/pacts
 ```
-The command will:
-* Create a new folder `logs` where you can check all the interactions received by the Mock Service
-* Create a new folder `tmp` where it will store all `Pacts` successfully verified by the test
+这个命令会：
+* 生成一个新的 `logs` 文件夹，在这个目录你可以以日志的形式查看Mock服务里收到的所有交互内容
+* 生成一个新的 `tmp` 文件夹，这个目录将会保存测试成功验证的`Pact`文件
 
-From there, type in `mocha` on your terminal to get your test executed. Once successful a new Pact file will be generated at `tmp/pacts/hello_consumer-hello_provider.json` that looks somewhat like this:
+在终端中输入`mocha`去执行测试。成功后会生成`tmp/pacts/hello_consumer-hello_provider.json`这样的pact文件，内容像下面一样：
+
 ```json
 {
   "consumer": {
