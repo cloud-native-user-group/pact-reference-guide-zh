@@ -36,7 +36,7 @@
    * [提供者端](best_practices/provider.md)
 * [FAQ](faq/README.md)
    * [Convince me](faq/convinceme.md)
-* [Getting Help](getting_help/README.md)
+* [获得帮助](getting_help/README.md)
 * [Contributing](contributing/README.md)
 * [Contributors](about_pact/README.md)
 * [Roadmap](roadmap/README.md)
