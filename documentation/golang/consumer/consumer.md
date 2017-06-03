@@ -1,15 +1,10 @@
-# Consumer
+# 消费者端
 
-Consumer side Pact testing is an isolated test that ensures a given component
-is able to collaborate with another (remote) component. Pact will automatically
-start a Mock server in the background that will act as the collaborators' test
-double.
+消费者端的Pact测试是一个隔离测试，可以确保给定的组件能和另一个(远程)组件协作。Pact会自动在后台启动一个Mock服务器，作为协作组件的测试替身。
 
-This implies that any interactions expected on the Mock server will be validated,
-meaning a test will fail if all interactions were not completed, or if unexpected
-interactions were found:
+这意味着Mock服务器任何期望的交互都会被验证，如果交互没有完成或者意外的交互出现，都会导致测试失败：
 
-A typical consumer-side test would look something like this:
+典型的消费者端测试如下所示：
 
 ```go
 func TestLogin(t *testing.T) {
@@ -54,6 +49,4 @@ func TestLogin(t *testing.T) {
 }
 ```
 
-If this test completed successfully, a Pact file should have been written to
-`./pacts/my_consumer-my_provider.json` containing all of the interactions
-expected to occur between the Consumer and Provider.
+如果这个测试顺利完成，Pact文件内容会写入`./pacts/my_consumer-my_provider.json`，其中包含了消费者端和提供者端的所有交互。

@@ -1,9 +1,12 @@
-# Flexible Matching
+# 灵活匹配
 
-Make sure you read about [Matching](../matching.md) first.
+确认你已经阅读过[匹配](../matching.md)这一节。
 
-#### Match by regular expression
+#### 通过正则表达式匹配
+
 Remember that the mock service is written in Ruby, so the regular expression must be in a Ruby format, not a JavaScript format. Make sure to start the mock service with the argument `--pact-specification-version 2.0.0`.
+
+mock服务是用Ruby编写的，所以正则表达式必须符合Ruby格式，而不是JavaScript的格式。确保使用参数`--pact-specification-version 2.0.0`启动mock服务。
 
 ```javascript
 provider
@@ -27,7 +30,8 @@ provider
   );
 ```
 
-#### Match based on type
+#### 基于类型匹配
+
 ```javascript
 
 provider
@@ -51,16 +55,17 @@ provider
   );
 ```
 
-#### Match based on arrays
-Matching provides the ability to specify flexible length arrays. For example:
+#### 基于数组匹配
+
+匹配提供了指定变长数组的能力。 例如：
 
 ```javascript
 Pact.Match.eachLike(obj, { min: 3 })
 ```
 
-Where `obj` can be any Javascript `object`, value or `Pact.Match`. It takes optional argument (`{ min: 3 }`) where min is greater than 0 and defaults to 1 if not provided. 
+`obj`可以任何的Javascript`对象`、值或者`Pact.Match`。
 
-Below is an example that uses all of the Pact Matchers.
+下面是一个使用了所有的Pact Matchers的例子。它接受一个可选的参数(`{ min: 3 }`)，这个参数`min`大于0并且缺省为1。
 
 ```javascript
 var somethingLike = Pact.Match.somethingLike;

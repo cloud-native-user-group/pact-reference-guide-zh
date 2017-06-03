@@ -1,57 +1,49 @@
-# Using Pact with other Languages
+# 用其它语言使用Pact
 
-For `Providers` written in languages that don't have native Pact support, you
-can still verify that they satisfy their Pacts, using the generic
-[Pact Provider Verification tool](https://github.com/pact-foundation/pact-provider-verifier).
+对于缺乏`提供者`原生Pact支持的语言，你仍然可以使用通用的[Pact 提供者端验证工具](https://github.com/pact-foundation/pact-provider-verifier)来验证是否满足它们的Pact。
 
-## Generic Pact Provider Verification
+## 通用的Pact提供者验证
 
-This setup simplifies Pact Provider verification process in any language.
+下面的设置简化了任何语言的Pact提供者端的验证过程。
 
-**Features**:
+**特性**:
 
-* Verify Pacts published to a [Pact Broker](https://github.com/bethesque/pact_broker)
-* Verify local `*.json` Pacts for testing in a development environment
+* 验证发布到[Pact Broker](https://github.com/bethesque/pact_broker)的Pact文件
+* 在开发环境验证供测试用的本地Pact`*.json`文件
 * Pre-configured Docker image with Ruby installed and a sane, default `src/Rakefile` keeping things DRY
-* Works with Pact [provider states](https://github.com/realestate-com-au/pact/wiki/Provider-states) should you need them
+* 安装有Ruby环境以及[sane](https://www.ruby-toolbox.com/projects/sane)的预先配置的Docker镜像，缺省为`src / Rakefile`避免重复
+* 应当需要使用[提供者端状态](https://github.com/realestate-com-au/pact/wiki/Provider-states)
 
-The two solutions below use the [Docker](https://github.com/DiUS/pact-provider-verifier-docker) image
-and the [Pact Provider Verifier](https://github.com/pact-foundation/pact-provider-verifier)
-Gem. For advanced usage, you can use
-[Pact Provider Proxy](https://github.com/bethesque/pact-provider-proxy) Gem
-directly, however in most cases the Pact Provider Verifier should cover your needs.
+下面的两个解决方案使用[Docker](https://github.com/DiUS/pact-provider-verifier-docker)镜像和[Pact Provider Verifier](https://github.com/pact-foundation/pact-provider-verifier) Gem。更高级的用法，你可以直接使用[Pact Provider Proxy](https://github.com/bethesque/pact-provider-proxy) Gem，然而，在大多数情况下，Pact Provider Verifier应该满足你的需求。
 
-### How it works
+### 如何运行
 
-*Steps*:
+*步骤*:
 
-1. Create an API and a corresponding Docker image for it
-1. Publish Pacts to the Pact broker (or create local ones)
-1. Start your API
-1. Run the Pact Provider Verifier
-1. Stop your API
+1. 创建一个API和对应的Docker镜像
+2. 将pact文件发布到Pact broker（或者创建本地文件）
+3. 启动API
+4. 运行Pact Provider Verifier
+5. 停止API
 
-The verifier will then replay all of the Pact files against your running API, and will fail (`exit 1`) if they are not satisfied.
+验证工具之后会针对你的运行API重放所有的Pact文件，如果无法满足则会失败(`exit 1`)。
+因为没有可用的测试DSL，所以在CI/CD流水线中运行时，你需要注意处理进程退出代码。
 
-There is no testing DSL available so you will need to be sensitive to process exit codes when running this in a CI/CD pipeline.
+如果你在使用Docker和Docker compose，会帮你自动搞定上面的步骤3-5。
+### Docker的例子
 
-If you are using Docker and Docker compose, steps 3-5 above are automatically taken care of for you.
+下面的使用Docker镜像的例子来自[Pact Provider Verifier](https://github.com/DiUS/pact-provider-verifier-docker)项目。
+*步骤*:
 
-### Docker Example
+1. 创建一个API和对应的Docker镜像
+2. 将pact文件发布到Pact broker（或者创建本地文件）
+3. 创建一个`docker-compose.yml`文件，连接你的API和Pact Verifier
+4. 设置下面所需的环境变量：
+   * `pact_urls` - 逗号分隔的pac文件URL列表
+   * `provider_base_url` - pact提供者(比如你的API)的基本url
+5. 运行`docker-compose build`以及`docker-compose up`
 
-The example below uses Docker image from the [Pact Provider Verifier](https://github.com/DiUS/pact-provider-verifier-docker) project.
-
-*Steps*:
-
-1. Create an API and a corresponding Docker image for it
-1. Publish Pacts to the Pact broker (or create local ones)
-1. Create a `docker-compose.yml` file connecting your API to the Pact Verifier
-1. Set the following required environment variables:
-   * `pact_urls` - a comma delimited list of pact file urls
-   * `provider_base_url` - the base url of the pact provider (i.e. your API)
-1. Run `docker-compose build` and then `docker-compose up`
-
-##### Sample docker-compose.yml file for a Node API exposed on port `4000`:
+##### 一个运行在`4000`端口的Node API的docker-compose.yml例子文件：
 
 ```
 api:
@@ -72,11 +64,11 @@ pactverifier:
   - provider_base_url=http://api:4000
 ```
 
-#### API with Provider States
+#### 提供者状态的API
 
-Execute pact provider verification against a provider which implements the following:
+通过实现以下的内容来对提供者端执行Pact提供者验证：
 
-* an http get endpoint which returns pact provider_states by consumer
+* 一个消费者返回pact 提供者端状态的http get的端点
 
 		{
 			"myConsumer": [
@@ -85,18 +77,18 @@ Execute pact provider verification against a provider which implements the follo
 			]
 		}
 
-* an http post endpoint which sets the active pact consumer and provider state
+* 一个设置活跃的pact消费者和提供者状态的http post端点
 
 		consumer=web&state=customer%20is%20logged%20in
 
-The following environment variables required:
+需要下面的环境变量：
 
 * `pact_urls` - a comma delimited list of pact file URL
 * `provider_base_url` - the base URL of the pact `Provider`
 * `provider_states_url` - the full URL of the endpoint which returns `Provider States` by consumer
 * `provider_states_active_url` - the full URL of the endpoint which sets the active pact `Consumer` and `Provider` state`
 
-*Updated Sample docker-compose.yml file:*
+*更新例子docker-compose.yml文件：*
 
 	api:
 		build: .
@@ -115,13 +107,13 @@ The following environment variables required:
 		- provider_states_active_url=http://api:4000/provider-states/active
 
 
-### Ruby Example
+### Ruby的例子
 
-If you're not using Docker, you will need to:
+如果你没有使用Docker，那么就需要：
 
-* Install a Ruby runtime
-* Fork/clone the [repository](https://github.com/DiUS/pact-provider-verifier-docker) or copy the scripts into your project
-* Run the following commands:
+* 安装Ruby运行时环境
+* fork或者clone[代码库](https://github.com/DiUS/pact-provider-verifier-docker)或者将脚本拷贝到你的工程中
+* 运行下面的命令：
 
 ```
 bundle install
