@@ -11,6 +11,7 @@ GitBook : [Pact中文参考指南](https://wldandan.gitbooks.io/pact-reference-g
 
 ## 贡献者：
 
-* Vincent
-* 想飞就飞
-* iambowen
+* [@tongzh](https://github.com/tongzh)
+* [@想飞就飞](https://github.com/wldandan)
+* [@iambowen](https://github.com/iambowen)
+* [@lzufengye](https://github.com/lzufengye)
