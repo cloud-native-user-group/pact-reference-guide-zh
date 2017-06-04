@@ -1,85 +1,84 @@
-# FAQ
+# 常见问题
 
-### What is Pact good for?
-Pact is most valuable for designing and testing integrations where you (or your team/organisation/partner organisation) control the development of both the consumer and the provider, and the requirements of the consumer are going to be used to drive the features of the provider. It is fantastic tool for developing and testing intra-organisation microservices.
+### Pact适用于什么场景？
+当你（或你的团队/组织/合作组织）同时负责开发服务消费者与服务提供者，或者服务消费者的需求被用来驱动服务提供者的功能时，Pact对于它们之间的设计和测试集成是非常有价值的。它是组织内部开发和测试微服务的绝佳工具。
 
-### What is Pact not good for?
-* Performance and load testing.
-* Functional testing of the provider - that is what the provider’s own tests should do. Pact is about checking the contents and format of requests and responses.
-* Situations where you cannot load data into the provider without using the API that you’re actually testing (eg. public APIs). Why?
-* Testing “pass through” APIs, where the provider merely passes on the request contents to a downstream service without validating them. Why?
+### Pact不适用于什么场景？
+* 性能和压力测试。
+* 服务提供者的功能测试 - 这是服务提供者自己的测试应该做的。Pact是用来检查请求和响应的内容及格式。
+* 当你在不使用你所实际测试的API（如：公共API）就无法加载数据至服务提供者的情况下。 为什么?
+* "传递"API, 是指服务提供者仅将请求内容传递到下游服务而不做任何验证。 为什么?
 
-### Why doesn't Pact use JSON Schema?
+### 为什么Pact不使用Json Schema？
 
-Whether you define a schema or not, you will still need a concrete example of the response to return from the mock server, and a concrete example of the request to replay against the provider. If you just used a schema, then the code would have to generate an example, and generated values are not very helpful when used in tests, nor do they give any readable, meaningful documentation. If you use a schema *and* an example, then you are duplicating effort. The schema can almost be implied from an example. The ability to specify more flexible matching like "an array of any length" that is currently missing from v1 matching will be available in v2 matching (beta is out now, see [v2 flexible matching](https://github.com/realestate-com-au/pact/wiki/v2-flexible-matching)).
+不论你是否定义一个schema，你始终需要一个模拟服务器返回的响应的具体示例，和一个服务提供者端能够重复执行的请求的具体示例。假如使用schema的话，那么你的代码必须依照schema来生成一个示例，而生成的这些值对测试并没有太大帮助，而且也起不到可读性强、有意义的文档的作用。假如同时使用schema和一个具体示例，那你就做了重复的工作，因为schema几乎可以从一个示例中看出来。定义更灵活匹配的功能（如"任意长度数组""）在v1版本中暂无，将在v2版本中支持(beta版已经发布, 参见[v2版灵活匹配](https://github.com/realestate-com-au/pact/wiki/v2-flexible-matching)).
 
-### Why does Pact use concrete JSON documents rather than using more flexible JSONPaths?
+### 为什么Pact使用具体的JSON文档而不使用更灵活的JSONPaths？
 
-Pact was written by a team that was using microservices that had read/write RESTful interfaces. Flexible JSONPaths are useful when reading JSON documents, but no good for creating concrete examples of JSON documents to POST or PUT back to a service.
+Pact是由一个使用具有读/写RESTful接口的微服务的团队开发。当在读取JSON文档时，灵活的JSONPaths是有用的，但是在创建具体的JSON文档示例用来向一个服务发送POST或PUT请求时，JSONPaths就不那么有利了.
 
-### Why is there no support for specifying optional attributes?
+### 为什么不支持指定可选属性？
 
-Firstly, it is assumed that you have control over the provider's data (and consumer's data) when doing the verification tests. If you don't, then maybe Pact is [not the best tool for your situation](https://github.com/realestate-com-au/pact#what-is-it-good-for).
+首先，Pact假设当你在做测试验证是，你能够控制服务提供者（及服务消费者）的数据。如果你无法控制，那么Pact也许不是 [适合你的工具](https://github.com/realestate-com-au/pact#what-is-it-good-for).
 
-Secondly, if you think about it, if Pact supports making an assertion that element `$.body.name` may be present in a response, then you write consumer code that can handle an optional `$.body.name`, but in fact, the provider gives `$.body.firstname`, no test will ever fail to tell you that you've made an incorrect assumption. Remember that a provider may return extra data without failing the contract, but it must provide at minimum the data you expect.
+其次，考虑以下场景，假如Pact支持能够断言属性`$.body.name`可能存在于响应中，而你在服务消费者端也写了处理可选属性`$.body.name`的代码，但实际上服务提供者返回了`$.body.firstname`，没有任何测试会失败，来告诉你你做了错误的假设。请记住，服务提供者可以返回额外数据而不破坏契约，但它必须至少返回你在契约中期望的数据。
 
-### Why are the pacts generated and not static?
+### 为什么契约是生成的而不是静态的？
 
-* Maintainability: Pact is "contract by example", and the examples may involve large quantities of JSON. Maintaining the JSON files by hand would be both time consuming and error prone. By dynamically creating the pacts, you have the option to keep your expectations in fixture files, or to generate them from your domain (the recommended approach, as it ensures your domain objects and their JSON representations in the pacts can never get out of sync).
+* 可维护性：Pact是“以示例为契约”，示例可能涉及大量的JSON。手工维护JSON文件既费时又容易出错。 通过动态创建契约文件，你可以选择在fixture文件中保存的期望，或者从你的领域对象来生成它们（这是推荐的方法，因为这种方法能确保你的领域对象与契约文件中的JSON永远保持同步）。
 
-* Provider states: Dynamically setting expectations on the mock server allows the use of provider states, meaning you can make the same request in different tests, with different expected responses. This allows you to properly test all the code paths in your consumer (eg. with different response codes, or different states of the resource). If all the interactions were loaded at start up from a static file, the mock server wouldn't know which response to return. See this [gist](https://gist.github.com/bethesque/7fa8947c107f92ace9a4) as an example.
+* 服务提供者状态：在模拟服务器上动态设置期望让你能够使用服务提供者的状态，这意味着你可以在不同的测试中发出同一个请求，而得到不同的预期响应。 这确保你能够正确测试服务消费者端的所有代码路径（例如，处理不同的响应码或资源的不同状态)。 如果所有的交互都是在启动时从静态文件加载的，那么模拟服务器就不知道要返回哪个响应。 以[gist](https://gist.github.com/bethesque/7fa8947c107f92ace9a4)为例。
 
-### How do I test against the latest development and production versions of consumer APIs?
+### 如何测试最新的开发环境版本和生产环境版本的服务消费者端API?
 
-See [this article](http://rea.tech/enter-the-pact-matrix-or-how-to-decouple-the-release-cycles-of-your-microservices/).
+参见 [这篇文章](http://rea.tech/enter-the-pact-matrix-or-how-to-decouple-the-release-cycles-of-your-microservices/).
 
-### What does PACT stand for?
+### PACT代表什么？
 
-It doesn't stand for anything. It is the word "pact", as in, another word for a contract. Google defines a "pact" as "a formal agreement between individuals or parties." That sums it up pretty well.
+它不代表任何东西。 它只是“pact”这个单词，是契约(contract)的另一个单词。 Google将“pact”定义为“个人或各方之间的正式协议”。这个总结很好。
 
-### Why Pact may not be the best tool for public testing APIs?
-Each interaction in a pact should be verified in isolation, with no context maintained from the previous interactions. Tests that depend on the outcome of previous tests are brittle and land you back in integration test hell, which is the nasty place you’re trying to escape by using pacts.
+### Pact为什么不是测试公共API的最佳工具？
+契约中定义的每个交互都应该被独立验证，不依赖于上一次互动的上下文。 依赖于之前测试结果的测试是脆弱的，并且会将你带回集成测试的地狱中，这令人讨厌的地狱这正是你使用Pact测试尝试逃脱的地方。
 
-So how do you test a request that requires data to already exist on the provider? Provider states allow you to set up data on the provider by injecting it straight into the datasource before the interaction is run, so that it can make a response that matches what the consumer expects. They also allow the consumer to make the same request with different expected responses (eg. different response codes, or the same resource with a different subset of data).
+那么该怎样测试依赖于服务提供者数据的请求呢？提供者状态允许你在交互发生前就可以向数据源注入数据，从而预置服务提供者端数据，这样就可以生成与消费者期望相匹配的响应。提供者状态也允许消费者对同一请求测试不同的期望响应（例如不同的响应码，或者同一资源的不同数据子集）。
 
-If you use Pact to test a public API, the only way to set up the right provider state is to use the very API that you’re actually testing, which will make the tests slower and more brittle compared to the “normal” pact verification tests.
+假如你用Pact来测试公共API，设置合适提供者状态的唯一方法就是使用你所测试的API，与其他"正常"的Pact测试相比，这种测试将更耗时，而且更脆弱。
 
-If this is still a better situation for you than integration testing, or using another tool like VCR, then go for it!
+如果除集成测试外，你认为依然需要测试公共API，那就使用像VCR之类的其他工具吧!
 
-### Why Pact may not be the best tool for testing pass through APIs?
-During pact verification, Pact does not test the side effects of a request being executed on a provider, it just checks that the response body matches the expected response body. If your API is merely passing on a message to a downstream system (eg. a queue) and does not validate the contents of the body before doing so, you could send anything you like in the request body, and the provider would respond the same way. The “contract” that you really want is between the consumer and the downstream system. Checking that the provider responded with a 200 OK does not give you any confidence that your consumer and the downstream system will work correctly in real life.
+### 为什么Pact不是测试"传递"API的最佳工具？
+在契约验证时，Pact并不会去测试请求的执行在服务提供者端造成的副作用，它只是检查服务返回的响应与预期的响应是否匹配。如果你的API只是传递一个消息至下游系统（如消息队列）而不对内容做任何的验证，那么你就可以在请求中发送任何东西，而服务提供者将始终返回按同样的方式返回。你真正需要测试的契约是在服务消费者和下游系统之间。仅仅检查提供者是否返回200（OK）并不能使你有信心相信消费者与下游系统之间能够正确工作。
 
-What you really need is a “non-HTTP” pact between your consumer and the downstream system. Check out this gist for an example of how to use the Pact contract generation and matching code to test non-HTTP communications.
+对于这种API来说，你真正需要的是服务消费者与下游系统间的一个非HTTP契约，你可以参考这个gist，了解对于非HTTP通信的测试来说，如何使用Pact来生成契约和匹配代码。
 
-### Do I still need end-to-end tests?
+### 我还需要端到端测试吗？
 
-**TL;DR: Yes**
+**TL;DR: 当然**
 
-The answer to this question depends on your organisation's risk profile. There is generally a trade off between the amount of confidence you have that your system is bug free, and the speed with which you can respond to any bugs you find. A 10 hour test suite may make you feel secure that all the functionality of your system is working, but it will decrease your ability to put out a new release quickly when a bug is inevitably found.
+这个问题的答案取决于你所在组织的风险应对状况。在你对系统无缺陷的信心和你发现bug之后的响应速度之间，通常有一个权衡。进行10小时的测试可能使你对系统正常工作更有信心，但是当bug不可避免地被发现时，它会降低你快速推出新版本的能力。
 
-If you work in an environment where you prioritise "agility" over "stability", then maybe you would be better off investing the time that you would have spent maintaining end-to-end tests in improving your production monitoring.
+如果你工作在一个优先考虑"敏捷性"超过"稳定性"的环境中，那么你最好不要花太多时间来做端到端测试。
 
-If you work in a more traditional "Big Bang Release" environment, a carefully selected small set of end-to-end tests that focus on the core business value provided by your system should provide the confidence you need to release. Consider "Semantic monitoring" (a type of "testing in production") as an alternative.
+如果你工作中一个更传统的"大爆炸式发布"的环境中，那么对业务核心功能做一些小批量的端到端测试，会让你更有信心去做发布。同时考虑使用“语义监控”（Semantic monitoring，一种“生产环境测试”）作为替代。
 
-### How can I handle versioning?
+### 如何处理版本控制问题？
 
-Consumer driven contracts to some extent allows you to do away with versioning. As long as all your contract tests pass, you should be able to deploy changes without versioning the API. If you need to make a breaking change to a provider, you can do it in a multiple step process - add the new fields/endpoints to the provider and deploy. Update the consumers to use the new fields/endpoints, then deploy. Remove the old fields/endpoints from the provider and deploy. At each step of the process, all the contract tests remain green.
+消费者驱动的契约测试在某种程度上让你不需要去做版本控制。只要所有的契约测试都通过，那你就可以部署这些修改而无需对API做版本控制。如果对于服务提供者有大的更改，那么你可以分为几步来处理：将新的字段/端口添加至服务提供者并部署它。更新消费者端并部署，让它使用新的字段/端口。从服务提供者端移除旧的字段/接口并部署。在此过程中的每一步中，所有的契约测试都应该通过。
 
-Using a [Pact Broker](https://github.com/bethesque/pact_broker), you can tag the production version of a pact when you make a release of a consumer. Then, any changes that you make to the provider can be checked agains the production version of the pact, as well as the latest version, to ensure backward compatiblity.
+使用 [Pact Broker](https://github.com/bethesque/pact_broker), 你可以在发布服务消费者时标记来生产环境契约文件的版本。这样，你在服务提供者端做的任何修改，都将会对产品环境契约文件做验证，同时会对最新的契约文件做验证，以保证向后兼容。
 
-If you need to support multiple versions of the provider API concurrently, then you will probably be specifying which version your consumer uses by setting a header, or using a different URL component. As these are actually different requests, the interactions can be verified in the same pact without any problems.
+如果你需要同时支持服务提供者的多个版本的API，你可能会在HTTP Header中指明服务消费者将使用哪个版本，或者使用另外一个URL。由于这实际上是不同的请求，因此这些交互可以在同一个契约中验证，而没有任何问题。
 
-### Using Pact where the Consumer team is different from the Provider team
-Pact is "consumer driven contracts", not "dictator driven contracts". Just because it's called "consumer driven" doesn't mean that the team writing the consumer gets to write a pact and throw it at the provider team without talking about it. The pact should be the starting point of a collaborative effort.
+### 当服务消费者和服务提供者不在同一团队时，该如何使用Pact
+Pact是消费者驱动的契约，而不是"独裁者驱动的契约"。不能因为它是"消费者驱动"，服务消费者团队就只写一个契约文件，把它抛给服务提供者团队而不做任何沟通。契约应该作为团队协作的第一步。
 
-The way Pact works, it's the pact verification task (in the provider codebase) that fails when a consumer expects things that are different from what a provider responds with, even if the consumer itself is "wrong". This is a little unfortunate, but it's the nature of the beast.
+Pact的工作方式是，即使服务消费者本身是错误的，假如消费者期望的内容与服务提供者返回的不一致，也会导致契约验证失败。这有点不幸，但这是它的工作方式。
 
-Running the pact verification task in a separate CI build from the rest of the tests for the provider is a good idea - if you have it in the same build, someone is going to get cranky about another team being able to break their build.
+将契约验证从服务提供者的其他测试中分离出来，单独运行在一个持续集成(CI)流水线中，是个不错的方式。否则如果跟其他测试混在同一个CI流水线中，则有人会对此产生疑虑，因为另外一个团队可能破坏服务提供者的CI流水线。
 
-It's very important for the consumer team to know when pact verification fails, because it means they cannot deploy the consumer. If the consumer team is using a different CI instance from the provider team, consider how you might communicate to the consumer team when pact verification has failed. You should do one of the following:
+让消费者及时知道契约验证失败是非常重要的，因为这意味着消费者端无法被部署。假如服务消费者团队与服务提供者团队使用的是不同的CI实例，那你需要考虑当契约验证失败时如何与消费者团队及时沟通。你应该做出以下行动之一：
 
-* Configure the pact verification build to send an email to the consumer team when the build fails.
-* Even better, if you can, have a copy of the provider build run on the consumer CI that just runs the unit tests and pact verification. That way the consumer team has the same red build that the provider team has, and it gives them a vested interest in keeping it green.
+* 在流水线上做配置，当契约验证失败时，发邮件通知服务消费者团队。
+* 更好的方式是，假如可能的话，在消费者的CI上运行一份提供者的构建，只需要运行单元测试和契约验证。这样的话，当契约验证失败时，消费者团队也能察觉到，让消费者始终关心契约是否验证通过。
 
-Verify a pact by using a URL that you know the latest pact will be made available at. Do not rely on manual intervention (eg. someone copying a file across to the provider project) because this process will inevitably break down, and your verification task will give you a false positive. Do not try to "protect" your build from being broken by instigating a manual pact update process. The pact verify task is the canary of your integration - manual updates would be like giving your canary a gas mask.
-s
+使用拥有最新契约文件的URL来做契约验证。不要手动去做处理（比如，有些团队将契约文件拷贝至提供者服务）,因为手动拷贝很难保证正确性，你的验证任务可能会给你一个错误的肯定。不要试图通过手动更新契约文件的方式来"保护"你的构建不失败。契约验证恰如你在集成过程中的金丝雀，手动更新契约文件相当于给你的金丝雀一个防毒面具。
