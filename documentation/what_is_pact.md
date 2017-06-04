@@ -64,5 +64,5 @@ Atlassion在其2016 summit上的演讲：[Verifying Microservice Integrations wi
 你可以从如下渠道获得关于Pact的相关帮助：
 
 * **Google用户群组：** https://groups.google.com/forum/#!forum/pact-support
-* **Gitter:** 加入https://gitter.im/realestate-com-au/pact和https://gitter.im/DiUS/pact-jvm的讨论
+* **Gitter:** 加入 https://gitter.im/realestate-com-au/pact 和 https://gitter.im/DiUS/pact-jvm 的讨论
 * **Twitter:** @pact_up
