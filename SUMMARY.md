@@ -35,7 +35,7 @@
    * [消费者端](best_practices/consumer.md)
    * [提供者端](best_practices/provider.md)
 * [FAQ](faq/README.md)
-   * [Convince me](faq/convinceme.md)
+   * [为什么使用Pact](faq/convinceme.md)
 * [获得帮助](getting_help/README.md)
 * [贡献力量](contributing/README.md)
 * [贡献者](about_pact/README.md)

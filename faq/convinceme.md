@@ -1,87 +1,86 @@
-# Convince me: Why should I use Pact?
+# 为什么我要使用Pact？
 
-* Faster execution.
-* Reliable responses from mock service reduce likelihood of flakey tests.
-* Causes of failure are easier to identify as only one component is being tested at a time.
-* Design of service provider is improved by considering first how the data is actually going to be used, rather than how it is most easily retrieved and serialised.
-* No separate integration environment(s) required to be managed for automated integration tests - pact tests run in standalone CI builds.
-* Integration flows that would traditionally require running multiple services at the same time can be broken down and each integration point tested separately.
+* 更快的执行速度。
+* 模拟服务的可靠响应能够降低测试的不稳定性。
+* 测试失败的原因更易识别，因为一次只测试单个组件。
+* 通过优先考虑数据如何被实际消费，而不是最容易被获取或序列化，来改进服务提供者的设计。
+* 不需要为自动化集成测试专门维护一套环境——契约测试可在独立的CI流水线中运行。
+* 传统意义上需要同时运行多个服务的集成流程可被分解，每个集成点可被单独测试。
 
-## What if I think end-to-end (E2E) integration tests are good?
-Read the following:
+## 假如我认为端到端(E2E)的集成测试也挺好的?
+请阅读以下文章：
 
 * [http://googletesting.blogspot.com.au/2015/04/just-say-no-to-more-end-to-end-tests.html](http://googletesting.blogspot.com.au/2015/04/just-say-no-to-more-end-to-end-tests.html)
 * [http://blog.thecodewhisperer.com/permalink/integrated-tests-are-a-scam](http://blog.thecodewhisperer.com/permalink/integrated-tests-are-a-scam)
-* and if you're really keen, [Defect Analysis and Prevention for Software Process Quality Improvement](http://www.ijcaonline.org/volume8/number7/pxc3871759.pdf)
+* 假如你依然更倾向于端到端的集成测试，请阅读[软件过程质量中的缺陷分析及预防](http://www.ijcaonline.org/volume8/number7/pxc3871759.pdf)
 
-Research tells us that integration tests are more costly in terms of time, effort and maintenance without giving us any more guarantees.
+研究告诉我们，集成测试在时间、团队精力和维护方面的成本更加昂贵，却无法给予我们更多保障。
 
 
-## Common Excuses
-### ...but I already have a local Mock Server (e.g. VCR, MockServer)
+## 不使用Pact的常见借口
+### ......我在本地已经有个模拟服务了(例如： VCR，MockServer)
 
-Pact is like VCR in reverse. VCR records actual provider behaviour, and verifies that the consumer behaves as expected. Pact records consumer behaviour, and verifies that the provider behaves as expected. The advantages Pact provides are:
+Pact相当于VCR相反的功能。VCR记录服务提供者的行为，然后来验证服务消费者的行为是否符合预期。而Pact记录了服务消费者的行为，来验证服务提供者是否满足预期行为。Pact的优点有：
 
-* The ability to develop the consumer (eg. a Javascript rich client UI) before the provider (eg. the JSON backend API).
-* The ability to drive out the requirements for your provider first, meaning you implement exactly and only what you need in the provider.
-* Well documented use cases ("Given ... a request for ... will return ...") that show exactly how a provider is being used.
-* The ability to see exactly which fields each consumer is interested in, allowing unused fields to be removed, and new fields to be added in the provider API without impacting a consumer.
-* The ability to immediately see which consumers will be broken if a change is made to the provider API.
-* When using the [Pact Broker](https://github.com/bethesque/pact_broker), the ability to map the relationships between your services.
+* 使你能够在开发服务提供者（例如：提供JSON的后台API）之前就开发服务消费者（例如：一个基于Javascript的富客户端）。
+* 能够首先驱动出服务提供者端的需求，这意味着你在提供者端能够更准确的实现你的需求。
+* 详细文档化的使用用例（“给定......的请求，将返回......”），准确描述了如何去使用服务提供者端。
+* 能够看到每个服务消费者分别关心哪些字段，允许在服务提供者端API中删除未经使用的字段，增加新的字段，而不影响服务消费者使用。
+* 当服务提供者API发生了变更时，能够立即看到哪个消费者被破坏了。
+* 通过使用 [Pact Broker](https://github.com/bethesque/pact_broker)，能够直观地展示服务间的关系。
 
-See [https://github.com/realestate-com-au/pact/wiki/FAQ#how-does-pact-differ-from-vcr](https://github.com/realestate-com-au/pact/wiki/FAQ#how-does-pact-differ-from-vcr) for more examples of similar technologies.
+请参阅[https://github.com/realestate-com-au/pact/wiki/FAQ#how-does-pact-differ-from-vcr](https://github.com/realestate-com-au/pact/wiki/FAQ#how-does-pact-differ-from-vcr) 来查看更多类似技术的示例。
 
-### ...but I use Swagger/OpenAPI?
+### ...我已经使用了Swagger/OpenAPI?
 
-OpenAPIs and Pact are designed with different ends in mind. The differences can be summarised below:
+OpenAPIs和Pact的设计目的不同，他们的区别可以归纳如下：
 
-The Swagger / OpenAPI specification aims to standardise the description and structure of an API. It can tell you what APIs are available and what fields/structure it expects and can generate documentation/UI to interact with one. What it is not, is a testing framework.
+Swagger/OpenAPI规范旨在标准化API的描述及结构。它能够告诉你哪些API是可以使用的，这些API期望的字段和结构，并可以生成相应的文档/UI来与之交互。
 
-Pact on the other hand, is essentially a unit testing framework using _specification by example_. It just so happens that to be able to run those tests on the API consumer and provider side, it needs to generate an intermediate format to be able to communicate that structure - this is the specification. 
+与之不同的是，Pact本质上是一个 _通过示例来描述_ 的单元测试框架。只是为了能够在API的消费者和提供者端运行这些测试，它恰好需要生成一种能够表达API结构的中间格式——类似于规范。
 
-In fact, the authors of the OpenAPI specification predicted such use cases by announcing:
+事实上，OpenAPI规范的作者预测了这样的使用场景：
 
-> Additional utilities can also take advantage of the resulting files, such as testing tools.
-Potentially, for example, we could use vendor extensions to document this extra metadata that is captured in our spec. This is one way the two projects could come together.
+> 像测试工具这样的附加程序也能够利用规范所生成的文件。例如，我们可能会使用一些扩展程序来记录在规范中提到的元数据。这是两个项目可以协同工作的一种方式。
 
-If you are using Swagger, maybe take a look at [Swagger Request Validator](https://bitbucket.org/atlassian/swagger-request-validator), a plugin developed at Atlassian that aims to unify these worlds.
+假如你正在使用Swagger，请参阅这篇文章[Swagger请求验证器](https://bitbucket.org/atlassian/swagger-request-validator)，它是Atlassian开发的一个插件，旨在统一这种项目协同工作的方式。
 
-See [https://github.com/pact-foundation/pact-specification/issues/28](https://github.com/pact-foundation/pact-specification/issues/28) for more.
+阅读[https://github.com/pact-foundation/pact-specification/issues/28](https://github.com/pact-foundation/pact-specification/issues/28)查看更多资料。
 
-### ...but I already have an end-to-end (E2E) integration suite that runs for an hour?
+### ......但是我已经有了以小时运行的端到端（E2E）集成测试怎么办？
 
-There are a few key problems with end-to-end (E2E) testing:
+端到端（E2E）测试有几个关键问题：
 
-* E2E tests are slow - slow build times result in batching of changes. Batching is bad for Continuous Delivery
-* E2E tests are hard to coordinate. How do you ensure the exact correct versions of _all_ software components are exactly as they should be?
-* E2E complexity is non-linear - it gets harder and messier over time.
-* Why should you care about how other systems behave
+* E2E测试非常耗时——缓慢的构建时间会导致批量更改。批量更改不利于持续交付。
+* E2E测试很难协调。您如何确保 _所有的_ 软件组件都准确地处于正确的版本？
+* E2E测试的复杂性是非线性的——它会随着时间的推移变得越来越复杂。
+* 你为什么要关心其他系统的行为呢？
 
-The litmus test is this: if you can look someone straight in the eyes, and say that you don't spend a lot of time maintaining E2E environments or have constant challenges managing the tests, then it's time for another approach. If you have one or more people dedicated to managing release processes, this is probably a good sign you are heading in the wrong direction.
+你可以以此作为试金石: 如果你能够直视别人的眼睛并告诉他们你并没有花太多时间来维护E2E环境或者对测试管理并没有持续的挑战，那么你可以选择其他方式。但是当团队中有一个多多个人致力于管理发布流程，那么这种迹象可能表明你正处于错误的方向。
 
-If you really want to hang onto these, consider pushing a subset of your E2E scenarios further down your pipeline as a type of "Smoke Test", running just a few key scenarios prior to releasing to customers. 
+假如你真想使用E2E测试，可以考虑将你的E2E测试的部分场景推到流水线后半段，作为一种“冒烟测试”，只是在发不过用户之前运行几个关键场景。
 
-*NOTE: Obviously, there is an element of not wanting to throw the baby out with the bathwater here. Please factor accordingly *
+*注意: 你需要综合考虑，切忌不可不分良莠，好坏一起丢。*
 
-### ...but I use Docker?
-See "but I already have an E2E integration suite that runs for an hour?". All of the problems still exist, but Docker numbs the pain (or defers it).
+### ......但是我已经使用了Docker？
+请参考问题"但是我已经有了以小时运行的端到端（E2E）集成测试怎么办"。所有的问题依然存在，只是Docker掩盖了这些痛点（或将问题推迟暴露）。
 
-### ...but our company develops APIs before consumers (e.g. API/Document Driven Design)
+### ......但是我们公司开发API早于开发服务消费者（例如API/文档驱动设计）
 
-Then you are probably developing for _many consumers_, am I right? If you don't know who these consumers are going to be, then Pact may not be for you. If you have control over any of them, then Pact could be a good fit - you just won't be driving the design from the consumer (that's OK too).
+那么你可能正在给 _多个_ 消费者开发API，我说的对吗？假如你不确定你的服务消费者是谁，那么Pact可能不适合你。假如你能够掌控任意一个消费者，那么Pact可能会适合你——只不过你的需求并不是从消费者驱动而来（这也没有关系）。
 
-### ...but I don't trust you and your dodgy code
+### ......然而我不信任你和你这些取巧的代码
 
-Good, you shouldn't. You should evaluate Pact on a smaller project to prove its worthiness before downing the Kool-aid.
+很好，你确实不该一开始就信任我们。你应该在盲目推崇Pact之前首先在一个较小的项目上评估以证明其价值。
 
-In fact, you don't even have to use Pact to implement contract testing and gain the glorious benefits - Pact just makes it easier. 
+事实上，你甚至不需要使用Pact来完成契约测试并取得收益——Pact只是是你的契约测试更容易。
 
-## OK, I'm convinced but I can't convince my friends
+## 好吧，我被说服使用Pact了，但我无法说服我的朋友们也使用它。
 
-Are you just saying that so we don't feel bad?
+你只是说说而已，来让我们好受一些吗？
 
-Here are some suggestions to win them over:
+以下是些建议，帮助你赢得朋友们的支持：
 
-* Watch some of the great talks over lunch with your team and some popcorn
-* [Ask](https://gitter.im/realestate-com-au/pact) one of the pact contributors to do a brown-bag talk at your office or over hangouts
-* [Chat](https://gitter.im/realestate-com-au/pact) to us in real-time and we'll see if we can debate as your proxy
+* 与你的团队在午餐时间里看一些好的演讲，就着爆米花。
+* [联系](https://gitter.im/realestate-com-au/pact)其中的一个贡献者去你们办公室或者通过Hangouts做一个交流，不需要那么正式，午餐时间即可。
+* 随时与我们[沟通](https://gitter.im/realestate-com-au/pact)，或许我们可以替你说服他们。
