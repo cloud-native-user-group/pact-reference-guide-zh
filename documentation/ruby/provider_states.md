@@ -2,7 +2,7 @@
 
 关于这一高级话题，请先阅读[提供者状态](../provider_states.md)一节的介绍。
 
-提供者状态中的文本对于读者来说应该具有足够清楚的意义，如下（这是自动生成的文档读取到的）：
+当读者这样来读取提供者状态中的文本时应该是足够清楚的（应该按照这样的规则来读取那些自动生成的文档）：
 
 
 Given **an alligator with the name Mary exists** \*
@@ -13,9 +13,9 @@ With {"method" : "get", "path" : "/alligators/Mary" }
 
 Some Provider will respond with { "status" : 200, ...}
 
-\* 这是提供者状态
+\* 代表提供者状态
 
-\*\* 这是请求描述
+\*\* 代表请求描述
 
 ### 消费者代码库
 
@@ -58,7 +58,7 @@ end
 
 ### 提供者代码库
 
-根据上述的提供者状态，要相应地定义能够创建适当数据的服务提供者状态，可以在服务提供者项目中这样来写。（此处的消费者名称必须与消费者项目中配置的消费者名称相符，才能正确地找到这些提供者状态。）
+根据上述的提供者状态，来定义能够创建适当数据的服务提供者状态，可以在服务提供者项目中这样来写。（此处的消费者名称必须与消费者项目中配置的消费者名称相符，才能正确地找到这些提供者状态。）
 
 ```ruby
 # In /spec/service_consumers/provider_states_for_my_service_consumer.rb
@@ -93,7 +93,7 @@ require './spec/service_consumers/provider_states_for_my_service_consumer.rb'
 
 ### 基状态
 
-要定义一些能够对于给定消费者的每次交互前/后都会运行的代码，而不管是否指定了提供者状态，只需将set_up/tear_down代码块不被provider_state所包住即可。
+对于给定消费者来定义一些能够在每次交互前/后都会运行的代码，而不管是否指定了提供者状态，只需将set_up/tear_down代码块放置于provider_state之外即可。
 
 ```ruby
 Pact.provider_states_for 'My Service Consumer' do
@@ -112,7 +112,7 @@ end
 
 ### 全局状态
 
-全局状态将会在消费者特定的基状态被设置前而设置。避免使用全局设置来创建数据，因为当存在多个消费者时这会使测试变得脆弱。
+全局状态会先于消费者定义的基状态之前被设置。避免使用全局设置来创建数据，因为当存在多个消费者时这会使测试变得脆弱。
 
 ```ruby
 Pact.set_up do
@@ -126,7 +126,7 @@ end
 
 ### 测试错误响应
 
-测试客户端如何处理错误响应是非常重要的。
+测试客户端如何处理错误的响应是非常重要的。
 
 ```ruby
 # Consumer codebase
@@ -169,9 +169,9 @@ Pact.provider_states_for 'My Service Consumer' do
 end
 ```
 
-### 包含模块以便在set_up和tear_down中使用
+### 在set_up和tear_down中使用引入的模块
 
-按照这种方法包含进来的任意模块在set_up与tear_down代码块中都是可用的。 这样做的一个常见用途是将用于设置数据的工厂方法包含进来，于是提供者状态文件将不会过于臃肿。
+按照这种方法引入的任意模块在set_up与tear_down代码块中都是可以使用的。 这样做的一个常见用途是将用于设置数据的工厂方法包含进来，这样提供者状态文件将不会过于臃肿。
 
 ```ruby
 Pact.configure do | config |
