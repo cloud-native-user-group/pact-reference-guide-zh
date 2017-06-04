@@ -16,16 +16,16 @@
 
     $ gem install pact
 
-## 使用——一个场景示例
+## 使用方法——一个示例场景
 
-我们打算用Pact测试在消费者Zoo App和提供者Animal Service之间写一个集成测试。在消费者项目中，我们打算使用一个模型（Alligator类）来表示从Animal Service返回的数据，以及一个客户端（AnimalServiceClient）来负责向Animal Service发起HTTP调用。
+我们打算用Pact测试在`消费者`Zoo App和`提供者`Animal Service之间写一个集成测试。在消费者项目中，我们打算使用一个模型（Alligator类）来表示从Animal Service返回的数据，以及一个客户端（AnimalServiceClient）来负责向Animal Service发起HTTP请求。
 
 ![Example](../media/zoo_app-animal_service.png)
 ### 在Zoo App（消费者）项目中
 
 #### 1. 从模型类开始
 
-设想有一个类似这样的模型类。Alligator的属性依赖于远程服务，需要通过向Animal Service发HTTP调用才能够取到。
+设想有一个类似这样的模型类。Alligator的属性依赖于远程服务，需要通过向Animal Service发送HTTP请求才能获取到。
 
 ```ruby
 class Alligator
@@ -57,11 +57,10 @@ class AnimalServiceClient
   end
 end
 ```
-#### 3. Configure the mock Animal Service
 
-#### 3. 配置模拟的Animal Service
+#### 3. 配置Animal Service的模拟服务
 
-以下代码将在`localhost:1234`端口上创建一个模拟的服务，将用于对应用的HTTP查询请求作出响应，就像是真实的“Animal Service”一样。这里还创建了一个模拟的提供者对象，将用于设置期望值。用于访问模拟的服务提供者的名字可以是你在服务参数中所给出的任何名字——在本例中为“animal_service”。`
+以下代码将在`localhost:1234`端口上创建一个模拟服务，用于对应用的HTTP查询请求作出响应，正如真实的“Animal Service”应用一样。这里还创建了一个模拟的服务提供者对象，用于设置期望值。用于访问模拟服务提供者的方法名你可以通过服务参数任意指定——在本例中为“animal_service”。`
 
 ```ruby
 # In /spec/service_providers/pact_helper.rb
@@ -116,11 +115,11 @@ end
 
 #### 5. 执行测试用例
 
-执行AnimalServiceClient用例，将会在一个可配置的pact文件夹（默认为`spec/pacts`）下生成一个pact文件。
+执行AnimalServiceClient用例，将会在配置好的pact文件夹（默认为`spec/pacts`）下生成一个pact文件。
 
-日志将输出在一个可配置的日志文件夹（默认为`log`）下，可用于诊断问题。
+日志将输出在一个配置好的日志文件夹（默认为`log`）下，用于诊断问题。
 
-当然，以上这个用例将会失败，因为Animal Service的客户端方法还没有实现，那么下一步，来实现你的提供者客户端代码吧。
+当然，以上用例将会失败，因为Animal Service的客户端方法还没有实现，那么下一步，来实现提供者的客户端代码吧。
 
 #### 6. 实现Animal Service的消费者客户端方法
 
@@ -138,7 +137,7 @@ end
 
 #### 7. 再次运行该用例
 
-通过！现在你就会得到一个pact文件，可用于在Animal Service提供者端的项目中验证期望。
+测试通过！现在你会得到一个pact文件，它可用于在Animal Service提供者的项目中验证期望。
 
 现在，对于其他可能的返回状态码重复上述步骤。例如，考虑以下场景中你的客户端需要如何响应：
 
@@ -146,11 +145,11 @@ end
 - 500（具体说明响应体中所包含的错误信息，并确保客户端日志记录下了这些错误信息，这样当出现问题时会省很多事）
 - 校验授权时是否需要返回401/403。
 
-### 在Animal Service（提供者）项目中
+### 在Animal Service（`提供者`）项目中
 
-#### 1. 创建API类的骨架
+#### 1. 创建API相关类的骨架
 
-使用你所选择的框架创建API类（Pact的作者更喜欢使用[Webmachine](https://github.com/webmachine/webmachine)和[Roar](https://github.com/trailblazer/roar)）——先不用实现方法，我们要做测试优先开发，还记得吧？
+使用你所选择的框架创建API类（Pact的作者更喜欢使用[Webmachine](https://github.com/webmachine/webmachine)和[Roar](https://github.com/trailblazer/roar)）——先不用实现方法，我们要先写测试，后写实现，还记得吧？
 
 #### 2. 告诉提供者需要遵守之前的pact文件中的规约
 
@@ -201,4 +200,4 @@ end
 
 ### 使用提供者状态
 
-契约中的各个交互应该是在互相隔离状态下进行验证的，不得持有前一个交互中的上下文。那么怎样测试那些依赖于提供者中已存在的数据的请求呢？请在[这里](https://github.com/realestate-com-au/pact/wiki/Provider-states)查看关于提供者状态的介绍。
+契约中的各个交互应该是在互相隔离状态下进行验证的，不得持有前一个交互中的上下文。那么怎样测试那些依赖于在提供者端已存在的数据的请求呢？请在[这里](https://github.com/realestate-com-au/pact/wiki/Provider-states)查看关于提供者状态的介绍。
