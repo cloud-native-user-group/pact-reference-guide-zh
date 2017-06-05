@@ -39,4 +39,6 @@
 * [获得帮助](getting_help/README.md)
 * [贡献力量](contributing/README.md)
 * [贡献者](about_pact/README.md)
+* [谁在使用Pact？](testimonials/README.md)
+* [谁在使用Pact？](media/blogs_videos_and_articles.md)
 * [路线图](roadmap/README.md)
