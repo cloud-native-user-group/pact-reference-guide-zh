@@ -43,7 +43,7 @@ Swagger/OpenAPI规范旨在标准化API的描述及结构。它能够告诉你�
 
 > 像测试工具这样的附加程序也能够利用结果文件。例如，我们可能会使用一些扩展程序来记录在规范中提到的元数据。这是两个项目可以协同工作的一种方式。
 
-假如你正在使用Swagger，请参阅这篇文章[Swagger请求验证器](https://bitbucket.org/atlassian/swagger-request-validator)，它是Atlassian开发的一个插件，旨在统一这种项目协同工作的方式。
+假如你正在使用Swagger，请参阅这篇文章[Swagger模拟验证器](https://bitbucket.org/atlassian/swagger-mock-validator)，它是Atlassian开发的一个插件，旨在统一这种项目协同工作的方式。
 
 与Pact一起使用的话，对于API是否满足任何已发布的规范（对于外部客户端来说），能够给予你更多信心，同时对于任何已知的（内部）消费者端需求是否能够满足，也可以给予你更多信心。
 
