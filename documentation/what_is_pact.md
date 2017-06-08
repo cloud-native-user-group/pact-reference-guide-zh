@@ -31,7 +31,7 @@ Pact框架家族提供对[消费者驱动的契约](http://martinfowler.com/arti
   </tr>
 </table>
 
-其实我也需要被[说服](faq/convinceme.html)。
+更多使用Pact的[理由](faq/convinceme.html)。
 
 ### 演讲与展示
 
@@ -42,7 +42,9 @@ Pact框架家族提供对[消费者驱动的契约](http://martinfowler.com/arti
 
 具体到JVM相关的演讲，在[MelbJVM](http://www.meetup.com/en-AU/Melbourne-Java-JVM-Users-Group/)四月的meet-up和[Melbourne Microservices](http://www.meetup.com/en-AU/Melbourne-Microservices/)六月的meet-up上曾进行过名为[Deploy with Confidence!](https://www.youtube.com/watch?v=h-79QmIV824)的演讲。演讲幻灯片在[这里](media/Pact%20-%20Deploy%20with%20Confidence!.pdf)。
 
-Atlassion在其2016 summit上的演讲：[Verifying Microservice Integrations with Contract Testing](https://www.youtube.com/watch?v=-6x6XBDf9sQ&feature=youtu.be)，对消费者驱动的契约（和Pact）作出了很好的解释。
+可以看看Atlassion在其2016 summit上的演讲：[Verifying Microservice Integrations with Contract Testing](https://www.youtube.com/watch?v=-6x6XBDf9sQ&feature=youtu.be)，对消费者驱动的契约（和Pact）作出了很好的解释。
+
+还可以听听Soundcloud在MicroXchg 2017上的演讲[“Move Fast and Consumer-Driven-Contract-Testing Things”](https://speakerdeck.com/alonpeer/move-fast-and-consumer-driven-contract-test-things)。
 
 ### 各种语言的实现
 - [Ruby Pact](https://github.com/realestate-com-au/pact)
@@ -51,18 +53,18 @@ Atlassion在其2016 summit上的演讲：[Verifying Microservice Integrations wi
 - [JS Pact](https://github.com/DiUS/pact-consumer-js-dsl)
 - [Go Pact](https://github.com/pact-foundation/pact-go) (还有一个v1.1版本的原生[Pact Go](https://github.com/SEEK-Jobs/pact-go))
 - [Swift / Objective-C Pact](https://github.com/DiUS/pact-consumer-swift)
-
+- [Python](https://github.com/pact-foundation/pact-python)
 
 ### 介绍性文章
 
 * [Getting started with Pact](http://dius.com.au/2016/02/03/microservices-pact/)
-* [Simplifying micro-service testing with Pact](http://dius.com.au/2014/05/19/simplifying-micro-service-testing-with-pacts/)
-* [更多文章！](https://github.com/realestate-com-au/pact/wiki/News,-blogs,-videos-and-articles)
+* [...更多文章！](https://docs.pact.io/media/blogs_videos_and_articles.html)
 
 
 ### 获得帮助
 你可以从如下渠道获得关于Pact的相关帮助：
 
-* **Google用户群组：** https://groups.google.com/forum/#!forum/pact-support
-* **Gitter:** 加入 https://gitter.im/realestate-com-au/pact 和 https://gitter.im/DiUS/pact-jvm 的讨论
+* **Stack Overflow:**
+[https://stackoverflow.com/questions/tagged/pact](https://stackoverflow.com/questions/tagged/pact)
+* **Gitter:** 加入[https://gitter.im/realestate-com-au/pact](https://gitter.im/realestate-com-au/pact)和[https://gitter.im/DiUS/pact-jvm](https://gitter.im/DiUS/pact-jvm)的讨论
 * **Twitter:** @pact_up
