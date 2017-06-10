@@ -83,3 +83,81 @@ Pact的工作方式是，即使服务消费者本身是错误的，假如消费�
 * 更好的方式是，假如可能的话，在消费者的CI上运行一份提供者的构建，只需要运行单元测试和契约验证。这样的话，当契约验证失败时，消费者团队也能察觉到，让消费者始终关心契约是否验证通过。
 
 使用拥有最新契约文件的URL来做契约验证。不要依赖于手工处理（比如，有些团队将契约文件拷贝至提供者服务）,因为手动拷贝很难保证正确性，你的验证任务可能会给你一个错误的肯定。不要试图通过手动更新契约文件的方式来"保护"你的构建不失败。契约验证恰如你在集成过程中的金丝雀，手动更新契约文件相当于给你的金丝雀一个防毒面具。
+
+### 如何防止当契约非法时服务消费者去部署。
+
+**使用 Pact Broker Webhooks**
+
+使用[Pact Broker](https://github.com/pact-foundation/pact_broker)上的[webhooks](https://github.com/pact-foundation/pact_broker/blob/master/lib/pact_broker/doc/views/webhooks.markdown)，当修改后的契约被提交后，立即触发服务提供者端的构建。
+
+**确保服务提供者的验证结果被发布回Broker**
+
+自Pact Broker 2.0以上版本，及Pact的Ruby实现1.11.1以上版本，服务提供者的验证结果可被发布回代理（broker）并显示在索引页面上。服务消费者小组应该在部署之前在查询索引页上的验证结果。
+
+需要注意的一点是，只有服务提供者的生成环境版本被验证后，部署服务消费者才是安全的。
+
+其他可供考虑的方法有：
+
+**协作**
+
+那么，对于初学者，你必须与提供商团队密切协作！
+
+**有效使用代码分支**
+
+当然，在服务消费者可以安全发布之前，服务消费者对契约的新假设进行验证是非常重要的。在分支被合并到主干之前，需要先在服务提供者端进行验证。
+
+**使用版本控制来检测被修改的契约：**
+
+如果你同时将主契约文件提交至代码库中，可以让你的CI构建有条件地执行——如果契约发生了修改，你需要等待服务提供者端构建成功，服务契约未发生修改，则可安全部署。
+
+### 如何测试OAuth和请求中其他安全报头？
+
+对于像OAuth2这种由标准定义并由实施该标准的库实现的交互，我们建议不要在这些场景下使用Pact。标准是定义良好的，不会频繁更改的，你可能会有更简单的测试选项可用（或许是你使用的框架提供的功能）。
+
+对于使用这些报头的API，情况会有点复杂，尤其是在实际需要验证合法口令的服务提供者端。想想为什么？
+
+当Pact读取契约文件在服务提供者端进行验证时，它需要有一个合法的口令，如果该口令已经存储在Pact文件中，那么它也可能已过期。
+
+**以下是一些可选的方法**
+
+* 创建在测试期间使用的模拟认证服务——这使得你有最好的控制权。
+
+* 当在使用JVM时，则可以使用[请求过滤器](https://github.com/DiUS/pact-jvm/tree/master/pact-jvm-provider-gradle#modifying-the-requests-before-they-are-sent)在发送给提供者之前修改请求报头。
+
+* 在服务提供者端配置一个轻松的OAuth2验证服务，只要报头匹配规范（例如Authorization报头），就可以接收有效报头。你可以利用提供者状态特性实现此功能。
+
+* 使用Ruby的`Timecop`或类似的库来操作运行时时钟。
+
+注意：任何将请求发送给运行的提供者之前来修改它的的选项都会增加你失去交互关键部分的可能性，从而使你面临风险。谨慎使用。
+
+请参阅以下链接进一步讨论：
+
+* [https://github.com/realestate-com-au/pact/issues/49#issuecomment-65346357](https://github.com/realestate-com-au/pact/issues/49#issuecomment-65346357)
+
+* [https://groups.google.com/forum/#!searchin/pact-support/oauth%7Csort:relevance/pact-support/zTnDlOgdYhU/tq_Yx8MnIgAJ](https://groups.google.com/forum/#!searchin/pact-support/oauth%7Csort:relevance/pact-support/zTnDlOgdYhU/tq_Yx8MnIgAJ)
+
+* [https://groups.google.com/forum/#!topic/pact-support/tSyKZMxsECk](https://groups.google.com/forum/#!topic/pact-support/tSyKZMxsECk)
+
+* [http://stackoverflow.com/questions/40777493/how-do-i-verify-pacts-against-an-api-that-requires-an-auth-token/40794800?noredirect=1#comment69346814_40794800](http://stackoverflow.com/questions/40777493/how-do-i-verify-pacts-against-an-api-that-requires-an-auth-token/40794800?noredirect=1#comment69346814_40794800)
+
+### 如何测试响应中的二进制文件，例如下载功能？
+
+我们建议验证交互中的核心方面——例如请求本身以及响应头。
+
+```ruby
+{
+   state: 'I have a picture that can be downloaded',
+   uponReceiving: 'a request to download some-file',
+   withRequest: {
+       method: 'GET',
+       path: '/download/somefile'        
+   },
+   willRespondWith: {
+       status: 200,
+       headers: 
+       {
+           'Content-disposition': 'attachment; filename=some-file.jpg'
+       }        
+   }
+}
+```
