@@ -1,14 +1,6 @@
 # Go
 
-Pact Go的版本目前在*beta*并支持Pact v2规范。
-
-### 开始使用
-
-[下载](https://github.com/pact-foundation/pact-go/releases)最新的发布版本，然后[安装](https://github.com/pact-foundation/pact-go#installation) Pact Go。
-
-Navigate through the side menu to learn more about using Pact with Golang, or head
-to the [Go Pact website](https://github.com/pact-foundation/pact-go) for more detail.
-浏览侧边菜单，详细了解如何使用Pact的Golang版本，或者访问[Go Pact 网站](https://github.com/pact-foundation/pact-go)了解更多细节。
+Pact Go的版本目前支持Pact v2规范，访问[网站](https://github.com/pact-foundation/pact-go/)开始学习。
 
 ### Go-Kit例子
 
