@@ -4,12 +4,7 @@
 
 ## 入门指南
 
-这里有一个[工作坊](https://github.com/DiUS/pact-workshop-ruby-v2)，可以带你从头到尾完成一个例子，涉及Pact中用到的大部分概念。大约需要2小时完成。
-
-
-## 上手指南
-
-这个[workshop](https://github.com/DiUS/pact-workshop-ruby-v2)可以帮你从头到尾完成一个示例问题，了解Pact支持的大多数概念。最多只需要两个小时就可以完成了。
+这个[workshop](https://github.com/DiUS/pact-workshop-ruby-v2)可以带你从头到尾完成一个例子，涉及Pact支持的大部分概念。大约需要2小时完成。
 
 ## 安装
 
