@@ -1,13 +1,10 @@
 # 匹配
 
-本节描述在`消费者`端测试时可用的不同种类的请求/响应匹配技术。注意，以下演示的例子使用的是Ruby DSL，因为各种实现有所不同，请参考自己所使用的特定语言和框架。
+本节描述在`消费者`端测试时可以使用的各种不同的请求/响应匹配技术。注意，以下演示的例子使用的是Ruby DSL，因为各种实现有所不同，请参考自己所使用的特定语言和框架。
 
 ###### 注意
 
 *如果在`消费者`端编写测试时所使用的语言与`提供者`端不同，必须确保两者使用的是共同的Pact规范，否则就无法进行验证。*
-
-*比如，如果你使用的是JS消费者端Pact DSL的v2版本，而提供者端是.NET，那就没法工作了，因为.NET的提供者只支持v1.1版本。这种情况下，你就只能在`消费者`端使用v1.1以保持兼容。*
-
 
 ### 正则表达式
 
@@ -33,9 +30,9 @@ animal_service.given("an alligator named Mary exists").
     })
 ```
 
-注意`Pact::Term`的用法。当你跑消费者的测试的时候，模拟的服务将会返回你所指定“生成”的值，然后当你在提供者的代码库中校验契约的时候，它可以确保该键值与指定的正则表达式相匹配。
+注意`Pact::Term`的用法。当你跑消费者的测试的时候，模拟的服务将会返回你所指定“生成”的值，然后当你在提供者的代码库中验证契约的时候，它可以确保该键值与指定的正则表达式相匹配。
 
-你也可以对请求匹配使用`Pact::Term`。
+你也可以对请求使用`Pact::Term`进行匹配。
 
 ```ruby
 animal_service.given("an alligator named Mary exists").
@@ -56,7 +53,7 @@ animal_service.given("an alligator named Mary exists").
 
 ### 类型匹配
 
-通常，你并不关注特定路径下的某个具体值是多少，你所关注的只是有这个值并且该值是所期望的类型。这种场景下，可以使用`Pact::SomethingLike`。
+通常，你并不关注特定路径下的某个具体值是多少，你所关注的只是有这个值并且该值是所期望的类型。这种场景下，可以使用`Pact::SomethingLike`（已在`require 'pact/consumer/rspec'`中引入）。
 
 ```ruby
 animal_service.given("an alligator named Mary exists").
@@ -76,7 +73,24 @@ animal_service.given("an alligator named Mary exists").
     })
 ```
 
-消费者测试中的模拟服务将会返回`{"name": "Mary", "age": 73}` ，但是当在提供者端执行`pact:verify`时，只会检查`name`的值是否是字符串，以及`age`的值是否是整数。如果你想精确匹配“Mary”，但是又允许age为任何值，应该在 `Pact::SomethingLike`中只包含进`73`。
+消费者测试中的模拟服务将会返回`{"name": "Mary", "age": 73}` ，但是当在提供者端执行`pact:verify`时，只会检查`name`的值是否是字符串，以及`age`的值是否是整数。如果你想精确匹配“Mary”，但是又允许age为任何值，应该在 `Pact::SomethingLike`中只包含进`73`。例如：
+
+```ruby
+animal_service.given("an alligator named Mary exists").
+  upon_receiving("a request for an alligator").
+  with(
+    method: "get",
+    path: "/alligators/Mary", 
+    headers: {"Accept" => "application/json"}).
+  will_respond_with(
+    status: 200,
+    headers: {"Content-Type" => "application/json"},
+    body: {
+      name: "Mary",
+      age: Pact.like(73)
+    }
+  )
+```
 
 对于请求匹配，模拟服务允许在消费者测试中使用任何类型的请求值，只要是同一类型即可，但是在`pact:verify`中将使用给定值进行重放。
 
@@ -100,9 +114,7 @@ animal_service.given("an alligator named Mary exists").
 
 ### 查询参数
 
-查询参数可以指定为字符串或者哈希。
-
-当指定为字符串时，将会执行精确匹配。你可以使用Pact::Term，但是只能将查询字符串作为一个整体进行匹配。注意，查询参数在期望中应该是已被编码过的URL。（这一功能在v2版本的匹配中将会被修改。）
+查询参数可以指定为字符串或者哈希。当指定为字符串时，将会执行精确匹配。你可以使用Pact::Term，但是只能将查询字符串作为一个整体进行匹配。注意，查询参数在期望中应该是已被编码过的URL。（这一功能在v2版本的匹配中将会被修改。）
 
 ```ruby
 
