@@ -42,7 +42,7 @@ end
 ```
 #### 3. 配置模拟的Animal Service
 
-以下代码将在`localhost:1234`端口上创建一个模拟的服务，将用于对应用的HTTP查询请求作出响应，就像是真实的“Animal Service”一样。这里还创建了一个模拟的提供者对象，将用于设置期望值。用于访问模拟的服务提供者的名字可以是你在服务参数中所给出的任何名字——在本例中为“animal_service”。
+以下代码将在`localhost:1234`端口上创建一个模拟的服务，用于对应用的HTTP查询请求作出响应，就像是真实的“Animal Service”一样。这里还创建了一个模拟的提供者对象，用于设置期望值。用于访问模拟的服务提供者的名字可以是你在服务参数中所给出的任何名字——在本例中为“animal_service”。
 
 ```ruby
 # In /spec/service_providers/pact_helper.rb
@@ -103,7 +103,7 @@ end
 
 日志将输出在一个可配置的日志文件夹（默认为`log`）下，可用于诊断问题。
 
-当然，以上这个用例将会失败，因为Animal Service的客户端方法还没有实现，那么下一步，来实现你的提供者客户端代码吧。
+当然，以上这个用例将会失败，因为Animal Service的客户端方法还没有实现，那么下一步，来实现你的提供者客户端方法吧。
 
 #### 6. 实现Animal Service的消费者客户端方法
 
@@ -146,7 +146,7 @@ require 'pact/tasks'
 
 在服务提供者项目中创建名为`pact_helper.rb`的文件。推荐放在`spec/service_consumers/pact_helper.rb`下。
 
-更多信息，查看配置文档中的 [Verifying Pacts](https://github.com/realestate-com-au/pact/wiki/Verifying-pacts)和[Provider](documentation/configuration.md#provider)章节。
+更多信息，查看配置文档中的[验证契约](https://github.com/realestate-com-au/pact/wiki/Verifying-pacts)和[提供者](documentation/configuration.md#provider)章节。
 
 ```ruby
 # In specs/service_consumers/pact_helper.rb
@@ -179,6 +179,6 @@ end
 
 然后重复上述步骤。
 
-#### 5. 继续直到所有测试通过
+#### 5. 如此继续直到所有测试通过
 
-哇！你的Animal Service现在已经可以遵守与你的Zoo App消费者之间的契约了。现在你就有信心让你的消费者和提供者能够一起很好地工作了。
+耶！你的Animal Service现在已经可以遵守与你的Zoo App消费者之间的契约了。现在你就有把握让你的消费者和提供者一起很好地工作了。

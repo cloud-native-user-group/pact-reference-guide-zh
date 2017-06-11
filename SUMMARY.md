@@ -4,7 +4,7 @@
 * [介绍](documentation/what_is_pact.md)
 * [开始](documentation/how_does_pact_work.md)
    * [术语表](documentation/terminology.md)
-   * [使用样例](documentation/usage_ruby.md)
+   * [使用示例](documentation/usage_ruby.md)
    * [匹配](documentation/matching.md)
        * [注意事项](documentation/gotchas.md)
    * [验证契约](documentation/verifying_pacts.md)
