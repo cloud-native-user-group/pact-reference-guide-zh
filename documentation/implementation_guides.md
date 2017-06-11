@@ -10,9 +10,10 @@
    * [Android](https://github.com/DiUS/pact-workshop-android)
    
 ## 支持的语言
-   * [Ruby](documentation/ruby.md)
-   * [JVM](documentation/jvm.md)
-   * [.NET](documentation/net.md)
-   * [Javascript](documentation/javascript.md)
-   * [Go](documentation/go.md)
-   * [Swift / Objective-C](documentation/swift.md)
+
+* [Ruby](documentation/ruby.md)
+* [JVM](documentation/jvm.md)
+* [.NET](documentation/net.md)
+* [Javascript](documentation/javascript.md)
+* [Go](documentation/go.md)
+* [Swift / Objective-C](documentation/swift.md)

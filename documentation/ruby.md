@@ -1,6 +1,11 @@
 # Ruby
 
-这份上手指南能够帮助你通过Ruby开始使用Pact。更多详情或高级话题，可移步至[Ruby Pact GitHub仓库](https://github.com/realestate-com-au/pact)。
+这份入门指南能够帮助你通过Ruby开始使用Pact。更多详情或高级话题，可移步至[Ruby Pact在GitHub上的代码库](https://github.com/realestate-com-au/pact)。
+
+## 入门指南
+
+这里有一个[工作坊](https://github.com/DiUS/pact-workshop-ruby-v2)，可以带你从头到尾完成一个例子，涉及Pact中用到的大部分概念。大约需要2小时完成。
+
 
 ## 上手指南
 
@@ -16,7 +21,7 @@
 
     $ bundle
 
-或者自己这样安装：
+或者这样自己安装：
 
     $ gem install pact
 
@@ -119,9 +124,7 @@ end
 
 #### 5. 执行测试用例
 
-执行AnimalServiceClient用例，将会在配置好的pact文件夹（默认为`spec/pacts`）下生成一个pact文件。
-
-日志将输出在一个配置好的日志文件夹（默认为`log`）下，用于诊断问题。
+执行AnimalServiceClient用例，将会在配置好的pact文件夹（默认为`spec/pacts`）下生成一个pact文件。日志将输出在一个配置好的日志文件夹（默认为`log`）下，用于诊断问题。
 
 当然，以上用例将会失败，因为Animal Service的客户端方法还没有实现，那么下一步，来实现提供者的客户端代码吧。
 
@@ -166,7 +169,7 @@ require 'pact/tasks'
 
 在服务提供者项目中创建名为`pact_helper.rb`的文件。推荐放在`spec/service_consumers/pact_helper.rb`下。
 
-更多信息，查看配置文档中的 [Verifying Pacts](https://github.com/realestate-com-au/pact/wiki/Verifying-pacts)和[Provider](documentation/configuration.md#provider)章节。
+更多信息，查看配置文档中的 [验证契约](https://github.com/realestate-com-au/pact/wiki/Verifying-pacts)和[提供者](documentation/configuration.md#provider)章节。
 
 ```ruby
 # In specs/service_consumers/pact_helper.rb
@@ -191,7 +194,7 @@ end
     $ rake pact:verify
 恭喜你！现在你有一个失败的测试需要通过了。
 
-在这一阶段，你可能会想要在每实现一个特性之后能够只运行众多用例中的某一个。在pact:verify的失败输出结果的底部，你可以看到用于重新独立运行每条失败的请求的命令。只运行一条请求的命令类似这样：
+在这一阶段，你可能会希望在每实现一个特性之后可以只运行众多用例中的某一个。在pact:verify的失败输出结果的底部，你可以看到用于重新独立运行每条失败的请求的命令。只运行一条请求的命令类似这样：
 
     $ rake pact:verify PACT_DESCRIPTION="a request for an alligator" PACT_PROVIDER_STATE="an alligator exists"
 #### 4. 实现代码让你的第一个测试用例通过
@@ -200,7 +203,7 @@ end
 
 #### 5. 继续直到所有测试通过
 
-哇！你的Animal Service现在已经可以遵守与你的Zoo App消费者之间的契约了。现在你就有信心让你的消费者和提供者能够一起很好地工作了。
+耶！你的Animal Service现在已经可以遵守与你的Zoo App消费者之间的契约了。现在你就有把握让你的消费者和提供者能够一起很好地工作了。
 
 ### 使用提供者状态
 
