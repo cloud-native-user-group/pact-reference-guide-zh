@@ -2,6 +2,10 @@
 
 这份上手指南能够帮助你通过Ruby开始使用Pact。更多详情或高级话题，可移步至[Ruby Pact GitHub仓库](https://github.com/realestate-com-au/pact)。
 
+## 上手指南
+
+这个[workshop](https://github.com/DiUS/pact-workshop-ruby-v2)可以帮你从头到尾完成一个示例问题，了解Pact支持的大多数概念。最多只需要两个小时就可以完成了。
+
 ## 安装
 
 在应用的Gemfile里面增加这一行：
