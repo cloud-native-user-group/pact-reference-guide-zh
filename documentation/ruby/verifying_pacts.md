@@ -5,7 +5,7 @@
 
 ## 使用rake pact:verify
 
-使用`pact:verify`任务是最常见的验证契约的方式。这也是配置你的服务提供者应遵守的默认契约集合之处。
+使用`pact:verify`任务是最常见的验证契约的方式。这也是配置你的服务提供者应遵守的契约的默认集之处。
 
 在Rakefile中引入`'pact/tasks'`就可以使用了。
 
@@ -18,9 +18,8 @@ task :default => 'pact:verify'
 
 ```
 
-被`pact:verify`任务用于验证的契约是在提供者端代码库中的 `pact_helper.rb` 文件里进行配置的。
+被`pact:verify`任务用于验证的契约是在提供者端代码库中的 `pact_helper.rb` 文件里进行配置的。该文件必须命名为 `pact_helper.rb` ，而其存储位置可以有一定程度的灵活性。推荐的存储目录是 `spec/service_consumers/pact_helper.rb`下。
 
-该文件必须命名为 `pact_helper.rb` ，而它存储的位置可以有一定程度上的灵活性。推荐的存储目录是 `spec/service_consumers/pact_helper.rb`下。
 为了保证每次使用的是消费者发布的最新版本的契约，推荐你要么使用[Pact Broker](https://github.com/bethesque/pact_broker)，要么在消费者端成功构建之后将契约发布至你的CI系统中作为artefacts（产物）。
 
 注意：Pact使用了Rack::Test，并假定你的服务提供者是一个Rack应用。如果你的提供者不是Rack应用，参见如下的选项说明。
@@ -80,7 +79,7 @@ end
 
 [Pact::Retreaty](https://github.com/fairfaxmedia/pact-retreaty)工具提供了一套极轻量级的机制，可以将pact契约推送到S3并从S3上拉取。
 
-## 使用定制化的pact:verify任务
+## 使用定制的pact:verify任务
 
 如果希望定制一个快捷任务，能够验证任意URL的契约，又不想作为普通的pact:verify任务所验证契约的一部分时，（例如，当你并行开发消费者和提供者，并且希望得到比CI运行更短的反馈周期时）可以将下列内容添加到Rakefile中。pact.uri可以是一个本地文件系统路径或者一个远程URL。
 
