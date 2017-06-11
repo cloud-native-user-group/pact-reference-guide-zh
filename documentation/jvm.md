@@ -8,4 +8,4 @@
 
 ## 入门指南
 
-这里有一个[工作坊](https://github.com/DiUS/pact-workshop-jvm)，可以带你从头到尾完成一个例子，涉及Pact中用到的大部分概念。大约需要2小时完成。
+这个[workshop](https://github.com/DiUS/pact-workshop-jvm)可以带你从头到尾完成一个例子，涉及Pact支持的大部分概念。大约需要2小时完成。
