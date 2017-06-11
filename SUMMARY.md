@@ -33,6 +33,7 @@
    * [其他语言](documentation/provider_verifier.md)
 * [最佳实践](best_practices/README.md)
    * [消费者端](best_practices/consumer.md)
+    * [契约测试 vs 功能测试](best_practices/contract_tests_not_functional_tests.md)
    * [提供者端](best_practices/provider.md)
 * [FAQ](faq/README.md)
    * [为什么使用Pact](faq/convinceme.md)
