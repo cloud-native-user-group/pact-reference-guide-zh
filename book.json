@@ -1,23 +1,19 @@
 {
     "language": "zh-hans",
     "plugins": [
-        "edit-link",
         "prism",
         "-highlight",
         "github",
-        "ga"
+        "toolbar-button"
     ],
     "pluginsConfig": {
-        "edit-link": {
-            "base": "https://github.com/pact-foundation/pact-foundation.github.io/tree/test",
-            "label": "Edit This Page"
-        },
         "github": {
-            "url": "https://github.com/pact-foundation/pact-foundation.github.io/"
+            "url": "https://github.com/cloud-native-user-group/pact-reference-guide-zh"
         },
-        "ga": {
-            "token": "UA-8926693-8",
-            "configuration": "auto"
+        "toolbar-button": {
+            "icon": "fa-globe",
+            "label": "En",
+            "url": "https://docs.pact.io"
         }
     }
 }
