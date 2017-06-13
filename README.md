@@ -1,15 +1,12 @@
 # Pact中文参考指南
 
+## 关于
+
 《Pact中文参考指南》是对[Pact官方手册](https://docs.pact.io)的中文翻译版本。
 
-如感兴趣，可以star或fork该[仓库](https://github.com/cloud-native-user-group/pact-reference-guide-zh)！
+欢迎[提出宝贵意见](https://github.com/cloud-native-user-group/pact-reference-guide-zh/issues)！
 
-GitBook : [Pact中文参考指南](https://www.pact.net.cn)
-
-
-[从这里开始](https://github.com/cloud-native-user-group/pact-reference-guide-zh/blob/master/SUMMARY.md)
-
-## 贡献者：
+## 贡献者
 
 * [@tongzh](https://github.com/tongzh)
 * [@想飞就飞](https://github.com/wldandan)
