@@ -1,70 +1,53 @@
 # 消费者(Consumer)使用Pact的最佳实践
 
-### Pact主要用于消费者与提供者的契约测试，而非对提供者(Provider)进行的功能测试
+### 将`Pact`用于消费者与提供者的契约测试，而不是对提供者的功能测试
 
-* 功能测试是确保提供者按照消费者的需求提供期望的响应。这些测试代码属于提供者团队，不应该由消费者团队完成。
-> Functional testing is about ensuring the provider does the right thing with a request. These tests belong in the provider codebase, and it's not the job of the consumer team to be writing them.
+* 功能测试是确保提供者在某个请求下执行正确的动作。这些测试代码属于提供者团队，不应该由消费者团队完成。
+* 而契约测试的目的是确保消费者团队和提供者团队对请求和响应达成共识。
+* Pact测试应该关注于：
+  * 检查消费者如何构建请求以及处理响应时所暴露出的bug
+  * 检查提供者的行为，消除理解上的偏差
+* Pact测试不应该关注于：
+  * 提供者内部所暴露的bug（尽管有可能作为副产品产生）
 
+对于提供者的功能测试和契约测试之间的区别，更多讨论见[后文](contract_tests_not_functional_tests.html)。
 
-* 契约测试能帮助消费者团队和提供者团队对请求和响应达成共识。
-> Contract testing is about making sure your consumer team and provider team have a shared understanding of what the requests and responses will be. Pact tests should focus on.
-
-
-* 契约测试不必关注消费者如何构建请求或提供者如何处理响应的实现。
-> exposing bugs in how the consumer creates the requests or handles responses exposing misunderstandings about how the provider behaves
-Pact tests should not focus on.
-
-
-* 对于提供者的功能测试和契约测试，二者的侧重点不相同，后面的部分我们会详细讨论。
-> exposing bugs in the provider (though this might come up as a by product) You can read more about the difference between contract and functional tests here.
-
-
-* 是否需要契约测试的经验是：如果没有契约测试，当消费者与提供者协作出现缺陷，会导致什么意外。如果意外可以接受，那就不需要契约测试 :)
-> The rule of thumb for working out what to test or not test is - if I don't include this scenario, what bug in the consumer or what misunderstanding about how the provider behaves might be missed. If the answer is none, don't include it.
+**关于Pact测试中测试范畴的取舍，经验法则是：如果在当前场景下不包括这部分测试内容，会引起消费者的什么bug，或者关于提供者的行为会出现怎样的理解偏差。如果答案是不会有问题，那么就不需要囊括到Pact测试的范畴中来。**
 
 ### 使用`Pact`进行隔离的（单元）测试
 
-* Stub对请求者提供响应，但不做行为的验证；Mock对请求者提供响应，但会对响应过程验证。对消费者而言，使用`Pact`作为Stub，获取期望的响应。
+* mock与stub是有区别的：mock会在测试中对调用它的请求进行验证，而stub对调用它的请求不作验证。使用`Pact`作为Stub，获取期望的响应。
 > as a mock (calls to mocks are verified after a test) not a stub (calls to stubs are not verified). Using `Pact` as a stub defeats the purpose of using `Pacts`.
 
-* 所谓隔离的单元测试，是指使用单元测试的方式将*消费者*的HTTP请求发送到*提供者*，但并需要完全运行消费者与提供者
-> for *isolated tests* (ie. unit tests) of the class(es) that will be responsible for making the HTTP calls from your `Consumer` application to your `Provider` application, not for integrated tests of your entire consumer codebase.
+* 所谓隔离的测试（如单元测试），是指只对负责从*消费者*发送HTTP请求的类进行测试，而不是对整个消费者代码库进行完整的集成测试。
 
 
-* 对于消费者代码库中的集成测试，应该谨慎对待。
-> *carefully*, for any sort of functional or integrated tests within your consumer codebase.
 
+* 对于消费者代码库中任何类型的功能测试或集成测试，应该谨慎对待。
+**为什么？**
 
-### 为什么？
-
-* 如果以传统的集成测试思维使用*Pact*。你会发现消费者的测试非常繁琐，因为你会使用`Pact`检查每个响应路径，JSON节点，查询参数和或HTTP头。同时，你还要在*提供者*进行大量笛卡儿乘积结果的验证。这将大大增加*提供者*运行验证的时间，但却提升测试的效率及覆盖率。
-> If you use Pact with exact matching for integrated tests, you will drive yourself nuts. You will have very brittle Consumer tests, as Pact checks every outgoing path, JSON node, query param and header. You will also end up with a cartesian explosion of interactions that need to be verified on the Provider side. This will increase the amount of time you spend getting your Provider tests to pass, without usefully increasing the amount of test coverage.
-
-### 仔细考虑如何使用它进行非隔离测试（功能，集成测试）
+* 如果以传统的集成测试思维使用`Pact`，会将自己陷入泥潭。你的`消费者`测试将非常脆弱，因为需要使用`Pact`检查每个响应路径，JSON节点，查询参数和请求头。同时，你还会发现，`提供者`端的待验证用例数量将会呈笛卡儿乘积式地爆炸增长。这将大大增加`提供者`运行验证的时间，却难以有效提升测试覆盖率。
+### 仔细考虑如何使用它进行非隔离测试（功能测试、集成测试）
 > Think carefully about how you use it for non-isolated tests (functional, integration tests)
 
-* 保持隔离的，精确匹配的验证。这将确保将域对象中的数据映射到请求中。
+* 保持相互隔离的、精确匹配的验证。这将确保将域对象中的数据映射到请求中。
 > Keep your isolated, exact match tests. These will make sure that you’re mapping the right data from your domain objects into your requests.
 
 * 对于集成测试，为了避免用例的脆弱性，尽量使用松散的、基于类型匹配(而非基于数值)的用例。同时，将其放置在多个测试用例间进行共享，可以极大的减少用例的次数。
-(这将有助于构建“契约测试”中的交互验证集合，避免重复项)。
+  (这将有助于构建“契约测试”中的交互验证集合，避免重复项)。
 > For the integration tests, use loose, type based matching for the requests to avoid brittleness, and pull out the setup into a method that can be shared between tests so that you do not end up with a million interactions to verify (this will help because the interactions collection in the `Pact` acts like a set, and discards exact duplicates).
 
-* 如果您不关心验证消费者与提供者之间的交互，那可以使用Webmock类似的工具实现集成测试，并使用共享的测试套件，在集成测试和Pact测试间构建请求/响应。
+* 如果您不关心验证消费者与提供者之间的交互，那可以使用类似Webmock的工具实现集成测试，并使用共享的测试夹具，在集成测试和Pact测试间构建请求/响应。
 > If you don’t care about verifying your interactions, you could use something like Webmock for your integrated tests, and use shared fixtures for requests/responses between these tests and the `Pact` tests to ensure that you have some level of verification happening.
 
 
 ### 通过URL提供最新的pact契约访问地址
 
-* 参考[消费者与提供者]之间的共享协议（https://github.com/realestate-com-au/pact/wiki/Sharing-pacts-between-consumer-and-provider）。
-> See [Sharing pacts between `Consumer` and `Provider`](https://github.com/realestate-com-au/pact/wiki/Sharing-pacts-between-consumer-and-provider) for options to implement this.
+* 关于如何实现的具体方法，请参考[消费者与提供者之间的契约共享](https://github.com/realestate-com-au/pact/wiki/Sharing-pacts-between-consumer-and-provider)。
 
+### 确保所有对`提供者`的调用都是经过`Pact`测试的类所发送的
 
-### 通过使用了“Pact”测试类，确保对提供者的调用
-
-* 不要在“消费者”的应用中直接创建任何HTTP请求。通过客户端类（一个负责处理与“提供者”交互的类）进行测试
-> Do not hand create any HTTP requests directly in your `Consumer` app. Testing through a client class (a class with the sole responsibility of handling the HTTP interactions with the `Provider`) gives you much more assurance that your `Consumer` app will be creating the HTTP requests that you think it should.
-
+* 不要在`消费者`应用中直接创建HTTP请求。应该通过客户端类（一个负责处理与“提供者”进行交互的单一职责的类）进行测试，这样会让你更有把握，你的`消费者`应用是按照所设想的方式来创建HTTP请求的。
 ###确保可以根据期望的响应，创建测试中使用的模型
 > Ensure the models you use in other tests could actually be created from the responses you expect
 
