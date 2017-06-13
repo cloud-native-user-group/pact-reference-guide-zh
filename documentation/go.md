@@ -1,6 +1,6 @@
 # Go
 
-Pact Go的版本目前支持Pact v2规范，访问[网站](https://github.com/pact-foundation/pact-go/)开始学习。
+[Pact Go](https://github.com/pact-foundation/pact-go/)的版本目前支持Pact v2规范，访问[网站](https://github.com/pact-foundation/pact-go/)开始学习。
 
 ### Go-Kit例子
 
