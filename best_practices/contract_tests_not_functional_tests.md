@@ -1,7 +1,5 @@
 # 契约测试与功能测试之间的区别（又名怎样做契约测试才不会陷入令人抓狂的误区）
 
-> The difference between contract tests and functional tests (or How To Do Pacts In a Way That Won't Make You Want To Stab Your Eyes Out)
-
 
 对于刚开始正式接触契约测试的团队，对于契约测试和功能测试之间的区别经常会存在争论。难就难在其实并不存在什么非黑即白的答案，更为重要的应该是逐渐加深对契约测试的理解和使用。
 
