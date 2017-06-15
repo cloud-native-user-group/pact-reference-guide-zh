@@ -17,8 +17,6 @@
 ### 使用`Pact`进行隔离的（单元）测试
 
 * mock与stub是有区别的：mock会在测试中对调用它的请求进行验证，而stub对调用它的请求不作验证。使用`Pact`作为stub，获取期望的响应。
-> as a mock (calls to mocks are verified after a test) not a stub (calls to stubs are not verified). Using `Pact` as a stub defeats the purpose of using `Pacts`.
-
 * 所谓隔离的测试（如单元测试），是指只对负责从*消费者*发送HTTP请求的类进行测试，而不是对整个消费者代码库进行完整的集成测试。
 * 对于消费者代码库中任何类型的功能测试或集成测试，应该谨慎对待。
 
