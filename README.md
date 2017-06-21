@@ -4,7 +4,7 @@
 
 《Pact中文参考指南》是对[Pact官方手册](https://docs.pact.io)的中文翻译版本。
 
-欢迎[提出宝贵意见](https://github.com/cloud-native-user-group/pact-reference-guide-zh/issues)！
+欢迎[提出宝贵意见](https://github.com/cloud-native-user-group/pact-reference-guide-zh/issues/new)！
 
 ## 贡献者
 
